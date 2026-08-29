@@ -1,0 +1,94 @@
+# =========================
+# Dependencies
+# =========================
+
+node_modules/
+
+
+# =========================
+# Environment variables
+# =========================
+
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
+
+# Environment templates SHOULD be committed
+!.env.example
+
+
+# =========================
+# Next.js
+# =========================
+
+.next/
+out/
+
+
+# =========================
+# NestJS / TypeScript
+# =========================
+
+dist/
+*.tsbuildinfo
+
+
+# =========================
+# Prisma generated client
+# =========================
+
+apps/api/src/generated/prisma/
+
+
+# =========================
+# Tests / coverage
+# =========================
+
+coverage/
+
+
+# =========================
+# Logs
+# =========================
+
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+
+# =========================
+# Vercel
+# =========================
+
+.vercel/
+
+
+# =========================
+# OS files
+# =========================
+
+.DS_Store
+Thumbs.db
+desktop.ini
+
+
+# =========================
+# IDEs
+# =========================
+
+.vscode/
+.idea/
+
+
+# =========================
+# Temporary files
+# =========================
+
+*.tmp
+*.temp
+.cache/

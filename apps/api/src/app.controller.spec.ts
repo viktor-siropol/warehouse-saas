@@ -1,22 +1,45 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
 import { AppController } from './app.controller.js';
-import { AppService } from './app.service.js';
+import { PrismaService } from './prisma/prisma.service.js';
 
 describe('AppController', () => {
-  let appController: AppController;
+  let controller: AppController;
+
+  const prismaMock = {
+    user: {
+      count: vi.fn(),
+    },
+  };
 
   beforeEach(async () => {
-    const app: TestingModule = await Test.createTestingModule({
+    const module: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
-      providers: [AppService],
+      providers: [
+        {
+          provide: PrismaService,
+          useValue: prismaMock,
+        },
+      ],
     }).compile();
 
-    appController = app.get<AppController>(AppController);
+    controller = module.get<AppController>(AppController);
+
+    vi.clearAllMocks();
   });
 
-  describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+  it('should report a healthy database connection', async () => {
+    prismaMock.user.count.mockResolvedValue(0);
+
+    const result = await controller.databaseHealth();
+
+    expect(prismaMock.user.count).toHaveBeenCalledOnce();
+
+    expect(result).toEqual({
+      status: 'ok',
+      database: 'connected',
+      users: 0,
     });
   });
 });
