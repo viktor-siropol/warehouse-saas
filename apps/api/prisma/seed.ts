@@ -1,6 +1,8 @@
 import 'dotenv/config';
 
 import { PrismaPg } from '@prisma/adapter-pg';
+import * as argon2 from 'argon2';
+
 import { PrismaClient } from '../src/generated/prisma/client.js';
 
 const connectionString = process.env.DATABASE_URL;
@@ -17,7 +19,16 @@ const prisma = new PrismaClient({
   adapter,
 });
 
+const DEMO_PASSWORD = 'warehouse-demo-password-2026';
+
 async function main() {
+  const passwordHash = await argon2.hash(DEMO_PASSWORD, {
+    type: argon2.argon2id,
+    memoryCost: 19_456,
+    timeCost: 2,
+    parallelism: 1,
+  });
+
   const organization = await prisma.organization.upsert({
     where: {
       slug: 'demo-company',
@@ -36,12 +47,15 @@ async function main() {
       email: 'admin@warehouse.local',
     },
 
-    update: {},
+    update: {
+      passwordHash,
+    },
 
     create: {
       email: 'admin@warehouse.local',
       firstName: 'Demo',
       lastName: 'Admin',
+      passwordHash,
     },
   });
 
@@ -134,6 +148,10 @@ async function main() {
       reorderPoint: 10,
     },
   });
+
+  console.log('Seed completed');
+
+  console.log(`Demo login: admin@warehouse.local / ${DEMO_PASSWORD}`);
 }
 
 main()

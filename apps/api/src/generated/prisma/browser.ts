@@ -28,6 +28,11 @@ export type Organization = Prisma.OrganizationModel
  */
 export type User = Prisma.UserModel
 /**
+ * Model RefreshSession
+ * 
+ */
+export type RefreshSession = Prisma.RefreshSessionModel
+/**
  * Model Membership
  * 
  */
