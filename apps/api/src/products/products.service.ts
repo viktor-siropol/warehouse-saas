@@ -4,6 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
+import { Prisma } from '../generated/prisma/client.js';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateProductDto } from './dto/create-product.dto.js';
 
@@ -74,18 +75,29 @@ export class ProductsService {
       throw new ConflictException('Product with this SKU already exists');
     }
 
-    return this.prisma.product.create({
-      data: {
-        organizationId,
-        categoryId: dto.categoryId,
-        sku: dto.sku,
-        name: dto.name,
-        description: dto.description,
-      },
+    try {
+      return await this.prisma.product.create({
+        data: {
+          organizationId,
+          categoryId: dto.categoryId,
+          sku: dto.sku,
+          name: dto.name,
+          description: dto.description,
+        },
 
-      include: {
-        category: true,
-      },
-    });
+        include: {
+          category: true,
+        },
+      });
+    } catch (error) {
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2002'
+      ) {
+        throw new ConflictException('Product with this SKU already exists');
+      }
+
+      throw error;
+    }
   }
 }
