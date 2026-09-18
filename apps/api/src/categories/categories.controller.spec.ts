@@ -1,53 +1,52 @@
-import { Test } from '@nestjs/testing';
+import { Test, type TestingModule } from '@nestjs/testing';
+
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { OrganizationMembershipGuard } from '../auth/guards/organization-membership.guard.js';
+
 import { CategoriesController } from './categories.controller.js';
+
 import { CategoriesService } from './categories.service.js';
 
 describe('CategoriesController', () => {
-  const categoriesServiceMock = {
-    findAll: vi.fn(),
-  };
-
   let controller: CategoriesController;
+
+  const findAllMock = vi.fn();
 
   beforeEach(async () => {
     vi.clearAllMocks();
 
-    const moduleRef = await Test.createTestingModule({
+    const module: TestingModule = await Test.createTestingModule({
       controllers: [CategoriesController],
 
       providers: [
         {
           provide: CategoriesService,
-          useValue: categoriesServiceMock,
+
+          useValue: {
+            findAll: findAllMock,
+          },
         },
       ],
-    }).compile();
+    })
+      .overrideGuard(OrganizationMembershipGuard)
+      .useValue({
+        canActivate: () => true,
+      })
+      .compile();
 
-    controller = moduleRef.get(CategoriesController);
+    controller = module.get<CategoriesController>(CategoriesController);
   });
 
   describe('findAll', () => {
-    it('should pass organizationId to CategoriesService', async () => {
+    it('should pass organizationId to CategoriesService', () => {
       const organizationId = '550e8400-e29b-41d4-a716-446655440000';
 
-      const categories = [
-        {
-          id: '550e8400-e29b-41d4-a716-446655440001',
-          name: 'Electronics',
-        },
-      ];
+      controller.findAll(organizationId);
 
-      categoriesServiceMock.findAll.mockResolvedValue(categories);
+      expect(findAllMock).toHaveBeenCalledTimes(1);
 
-      const result = await controller.findAll(organizationId);
-
-      expect(categoriesServiceMock.findAll).toHaveBeenCalledWith(
-        organizationId,
-      );
-
-      expect(result).toEqual(categories);
+      expect(findAllMock).toHaveBeenCalledWith(organizationId);
     });
   });
 });

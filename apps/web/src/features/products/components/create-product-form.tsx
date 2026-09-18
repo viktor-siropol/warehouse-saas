@@ -1,9 +1,11 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { type FormEvent, useState } from "react";
+import { useState } from "react";
 
-import { createProduct } from "../api/create-product";
+import type { FormEvent } from "react";
+
+import { createProductAction } from "../actions/create-product";
+
 import type { Category } from "../types";
 
 type CreateProductFormProps = {
@@ -15,8 +17,6 @@ export function CreateProductForm({
   organizationId,
   categories,
 }: CreateProductFormProps) {
-  const router = useRouter();
-
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [error, setError] = useState<string | null>(null);
@@ -27,30 +27,37 @@ export function CreateProductForm({
     event.preventDefault();
 
     const form = event.currentTarget;
+
     const formData = new FormData(form);
+
+    const description = String(formData.get("description") ?? "").trim();
 
     setError(null);
     setSuccess(null);
     setIsSubmitting(true);
 
     try {
-      await createProduct(organizationId, {
-        categoryId: String(formData.get("categoryId")),
+      const result = await createProductAction(organizationId, {
+        categoryId: String(formData.get("categoryId") ?? ""),
 
-        sku: String(formData.get("sku")),
+        sku: String(formData.get("sku") ?? "").trim(),
 
-        name: String(formData.get("name")),
+        name: String(formData.get("name") ?? "").trim(),
 
-        description: String(formData.get("description") ?? "") || undefined,
+        description: description || undefined,
       });
+
+      if (!result.ok) {
+        setError(result.error);
+
+        return;
+      }
 
       form.reset();
 
       setSuccess("Product created successfully");
-
-      router.refresh();
-    } catch (error) {
-      setError(error instanceof Error ? error.message : "Unexpected error");
+    } catch {
+      setError("Unexpected error");
     } finally {
       setIsSubmitting(false);
     }
@@ -58,16 +65,18 @@ export function CreateProductForm({
 
   return (
     <form onSubmit={handleSubmit}>
+      <h2>Create product</h2>
+
       <div>
         <label htmlFor="sku">SKU</label>
 
-        <input id="sku" name="sku" type="text" required />
+        <input id="sku" name="sku" required maxLength={100} />
       </div>
 
       <div>
         <label htmlFor="name">Name</label>
 
-        <input id="name" name="name" type="text" required />
+        <input id="name" name="name" required maxLength={200} />
       </div>
 
       <div>
@@ -87,7 +96,7 @@ export function CreateProductForm({
       <div>
         <label htmlFor="description">Description</label>
 
-        <textarea id="description" name="description" />
+        <textarea id="description" name="description" maxLength={2000} />
       </div>
 
       {error && <p role="alert">{error}</p>}

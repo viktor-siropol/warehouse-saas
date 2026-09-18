@@ -1,22 +1,11 @@
+import "server-only";
+
+import { authenticatedApiFetch } from "@/lib/api/server-api";
+
 import type { Product } from "../types";
 
-export async function getProducts(organizationId: string): Promise<Product[]> {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
-  if (!apiUrl) {
-    throw new Error("NEXT_PUBLIC_API_URL is not configured");
-  }
-
-  const response = await fetch(
-    `${apiUrl}/organizations/${organizationId}/products`,
-    {
-      cache: "no-store",
-    },
+export function getProducts(organizationId: string): Promise<Product[]> {
+  return authenticatedApiFetch<Product[]>(
+    `/organizations/${organizationId}/products`,
   );
-
-  if (!response.ok) {
-    throw new Error("Failed to load products");
-  }
-
-  return response.json() as Promise<Product[]>;
 }
