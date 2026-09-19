@@ -148,6 +148,7 @@ model Inventory {
 
 model StockMovement {
   id          String            @id @default(uuid()) @db.Uuid
+  operationId String?           @db.Uuid
   productId   String            @db.Uuid
   warehouseId String            @db.Uuid
   createdById String?           @db.Uuid
@@ -160,6 +161,7 @@ model StockMovement {
   warehouse Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
   createdBy User?     @relation(fields: [createdById], references: [id], onDelete: SetNull)
 
+  @@index([operationId])
   @@index([productId, createdAt(sort: Desc)])
   @@index([warehouseId, createdAt(sort: Desc)])
   @@index([createdById])
