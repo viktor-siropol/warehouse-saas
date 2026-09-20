@@ -30,3 +30,4 @@ Thumbs.db
 
 #Generated
 apps/api/generated/
+*.tsbuildinfo
