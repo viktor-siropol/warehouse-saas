@@ -22,6 +22,14 @@ enum StockMovementType {
   TRANSFER_OUT
 }
 
+enum PurchaseOrderStatus {
+  DRAFT
+  SUBMITTED
+  PARTIALLY_RECEIVED
+  RECEIVED
+  CANCELLED
+}
+
 model Organization {
   id        String   @id @default(uuid()) @db.Uuid
   name      String
@@ -29,10 +37,12 @@ model Organization {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  memberships Membership[]
-  warehouses  Warehouse[]
-  categories  Category[]
-  products    Product[]
+  memberships    Membership[]
+  warehouses     Warehouse[]
+  categories     Category[]
+  products       Product[]
+  suppliers      Supplier[]
+  purchaseOrders PurchaseOrder[]
 }
 
 model User {
@@ -44,9 +54,11 @@ model User {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  memberships     Membership[]
-  stockMovements  StockMovement[]
-  refreshSessions RefreshSession[]
+  memberships              Membership[]
+  stockMovements           StockMovement[]
+  refreshSessions          RefreshSession[]
+  purchaseOrdersCreated    PurchaseOrder[]   @relation("PurchaseOrderCreatedBy")
+  purchaseReceiptsReceived PurchaseReceipt[] @relation("PurchaseReceiptReceivedBy")
 }
 
 model RefreshSession {
@@ -90,9 +102,11 @@ model Warehouse {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  inventories    Inventory[]
-  stockMovements StockMovement[]
+  organization     Organization      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  inventories      Inventory[]
+  stockMovements   StockMovement[]
+  purchaseOrders   PurchaseOrder[]
+  purchaseReceipts PurchaseReceipt[]
 
   @@unique([organizationId, code])
   @@index([organizationId, isActive])
@@ -122,10 +136,11 @@ model Product {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  category       Category        @relation(fields: [categoryId], references: [id], onDelete: Restrict)
-  inventories    Inventory[]
-  stockMovements StockMovement[]
+  organization       Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  category           Category            @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  inventories        Inventory[]
+  stockMovements     StockMovement[]
+  purchaseOrderItems PurchaseOrderItem[]
 
   @@unique([organizationId, sku])
   @@index([organizationId, categoryId])
@@ -147,22 +162,130 @@ model Inventory {
 }
 
 model StockMovement {
-  id          String            @id @default(uuid()) @db.Uuid
-  operationId String?           @db.Uuid
-  productId   String            @db.Uuid
-  warehouseId String            @db.Uuid
-  createdById String?           @db.Uuid
-  type        StockMovementType
-  delta       Decimal           @db.Decimal(18, 3)
-  note        String?
-  createdAt   DateTime          @default(now())
+  id                String            @id @default(uuid()) @db.Uuid
+  operationId       String?           @db.Uuid
+  productId         String            @db.Uuid
+  purchaseReceiptId String?           @db.Uuid
+  warehouseId       String            @db.Uuid
+  createdById       String?           @db.Uuid
+  type              StockMovementType
+  delta             Decimal           @db.Decimal(18, 3)
+  note              String?
+  createdAt         DateTime          @default(now())
 
-  product   Product   @relation(fields: [productId], references: [id], onDelete: Restrict)
-  warehouse Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
-  createdBy User?     @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  product         Product          @relation(fields: [productId], references: [id], onDelete: Restrict)
+  purchaseReceipt PurchaseReceipt? @relation(fields: [purchaseReceiptId], references: [id], onDelete: SetNull)
+  warehouse       Warehouse        @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+  createdBy       User?            @relation(fields: [createdById], references: [id], onDelete: SetNull)
 
   @@index([operationId])
   @@index([productId, createdAt(sort: Desc)])
   @@index([warehouseId, createdAt(sort: Desc)])
   @@index([createdById])
+  @@index([purchaseReceiptId])
+}
+
+model Supplier {
+  id             String   @id @default(uuid()) @db.Uuid
+  organizationId String   @db.Uuid
+  code           String
+  name           String
+  contactName    String?
+  email          String?
+  phone          String?
+  address        String?
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  purchaseOrders PurchaseOrder[]
+
+  @@unique([organizationId, code])
+  @@index([organizationId, isActive])
+}
+
+model PurchaseOrder {
+  id             String              @id @default(uuid()) @db.Uuid
+  organizationId String              @db.Uuid
+  supplierId     String              @db.Uuid
+  warehouseId    String              @db.Uuid
+  createdById    String?             @db.Uuid
+  number         String
+  status         PurchaseOrderStatus @default(DRAFT)
+  currency       String              @db.VarChar(3)
+  note           String?
+  submittedAt    DateTime?
+  receivedAt     DateTime?
+  cancelledAt    DateTime?
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  supplier     Supplier     @relation(fields: [supplierId], references: [id], onDelete: Restrict)
+  warehouse    Warehouse    @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+
+  createdBy User? @relation("PurchaseOrderCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+
+  items    PurchaseOrderItem[]
+  receipts PurchaseReceipt[]
+
+  @@unique([organizationId, number])
+  @@index([organizationId, status])
+  @@index([supplierId])
+  @@index([warehouseId])
+  @@index([createdById])
+}
+
+model PurchaseOrderItem {
+  id               String   @id @default(uuid()) @db.Uuid
+  purchaseOrderId  String   @db.Uuid
+  productId        String   @db.Uuid
+  orderedQuantity  Decimal  @db.Decimal(18, 3)
+  receivedQuantity Decimal  @default(0) @db.Decimal(18, 3)
+  unitCost         Decimal  @db.Decimal(18, 2)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  purchaseOrder PurchaseOrder @relation(fields: [purchaseOrderId], references: [id], onDelete: Cascade)
+  product       Product       @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  receiptItems PurchaseReceiptItem[]
+
+  @@unique([purchaseOrderId, productId])
+  @@index([productId])
+}
+
+model PurchaseReceipt {
+  id              String   @id @default(uuid()) @db.Uuid
+  purchaseOrderId String   @db.Uuid
+  warehouseId     String   @db.Uuid
+  receivedById    String?  @db.Uuid
+  note            String?
+  createdAt       DateTime @default(now())
+
+  purchaseOrder PurchaseOrder @relation(fields: [purchaseOrderId], references: [id], onDelete: Restrict)
+  warehouse     Warehouse     @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+
+  receivedBy User? @relation("PurchaseReceiptReceivedBy", fields: [receivedById], references: [id], onDelete: SetNull)
+
+  items          PurchaseReceiptItem[]
+  stockMovements StockMovement[]
+
+  @@index([purchaseOrderId, createdAt])
+  @@index([warehouseId])
+  @@index([receivedById])
+}
+
+model PurchaseReceiptItem {
+  id                  String  @id @default(uuid()) @db.Uuid
+  receiptId           String  @db.Uuid
+  purchaseOrderItemId String  @db.Uuid
+  quantity            Decimal @db.Decimal(18, 3)
+
+  receipt           PurchaseReceipt   @relation(fields: [receiptId], references: [id], onDelete: Cascade)
+  purchaseOrderItem PurchaseOrderItem @relation(fields: [purchaseOrderItemId], references: [id], onDelete: Restrict)
+
+  @@unique([receiptId, purchaseOrderItemId])
+  @@index([purchaseOrderItemId])
 }

@@ -62,3 +62,28 @@ export type Inventory = Prisma.InventoryModel
  * 
  */
 export type StockMovement = Prisma.StockMovementModel
+/**
+ * Model Supplier
+ * 
+ */
+export type Supplier = Prisma.SupplierModel
+/**
+ * Model PurchaseOrder
+ * 
+ */
+export type PurchaseOrder = Prisma.PurchaseOrderModel
+/**
+ * Model PurchaseOrderItem
+ * 
+ */
+export type PurchaseOrderItem = Prisma.PurchaseOrderItemModel
+/**
+ * Model PurchaseReceipt
+ * 
+ */
+export type PurchaseReceipt = Prisma.PurchaseReceiptModel
+/**
+ * Model PurchaseReceiptItem
+ * 
+ */
+export type PurchaseReceiptItem = Prisma.PurchaseReceiptItemModel
