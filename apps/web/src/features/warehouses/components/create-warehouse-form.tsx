@@ -2,6 +2,12 @@
 
 import { useActionState } from "react";
 
+import { Button } from "@/components/ui/button";
+
+import { Input } from "@/components/ui/input";
+
+import { Label } from "@/components/ui/label";
+
 import { createWarehouseAction } from "../actions";
 
 import type { WarehouseActionState } from "../types";
@@ -23,41 +29,57 @@ export function CreateWarehouseForm({
   const [state, formAction, pending] = useActionState(action, initialState);
 
   return (
-    <form action={formAction}>
-      <h2>Create warehouse</h2>
+    <form action={formAction} className="space-y-4">
+      <div className="grid gap-4 md:grid-cols-3">
+        <div className="space-y-2">
+          <Label htmlFor="warehouse-name">Name</Label>
 
-      <div>
-        <label htmlFor="name">Name</label>
+          <Input
+            id="warehouse-name"
+            name="name"
+            minLength={2}
+            maxLength={100}
+            placeholder="Kraków Main Warehouse"
+            required
+          />
+        </div>
 
-        <input id="name" name="name" minLength={2} maxLength={100} required />
+        <div className="space-y-2">
+          <Label htmlFor="warehouse-code">Code</Label>
+
+          <Input
+            id="warehouse-code"
+            name="code"
+            minLength={2}
+            maxLength={30}
+            placeholder="KRK-01"
+            required
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="warehouse-address">Address</Label>
+
+          <Input
+            id="warehouse-address"
+            name="address"
+            maxLength={300}
+            placeholder="Kraków, Poland"
+          />
+        </div>
       </div>
 
-      <div>
-        <label htmlFor="code">Code</label>
+      {state.error && (
+        <p role="alert" className="text-sm text-destructive">
+          {state.error}
+        </p>
+      )}
 
-        <input
-          id="code"
-          name="code"
-          minLength={2}
-          maxLength={30}
-          placeholder="KRK-02"
-          required
-        />
-      </div>
+      {state.success && <p className="text-sm text-success">{state.success}</p>}
 
-      <div>
-        <label htmlFor="address">Address</label>
-
-        <input id="address" name="address" maxLength={300} />
-      </div>
-
-      {state.error && <p role="alert">{state.error}</p>}
-
-      {state.success && <p>{state.success}</p>}
-
-      <button type="submit" disabled={pending}>
+      <Button type="submit" disabled={pending}>
         {pending ? "Creating..." : "Create warehouse"}
-      </button>
+      </Button>
     </form>
   );
 }

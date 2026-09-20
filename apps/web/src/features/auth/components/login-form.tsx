@@ -2,6 +2,12 @@
 
 import { useActionState } from "react";
 
+import { Button } from "@/components/ui/button";
+
+import { Input } from "@/components/ui/input";
+
+import { Label } from "@/components/ui/label";
+
 import { loginAction } from "../actions";
 
 import type { AuthActionState } from "../types";
@@ -14,25 +20,24 @@ export function LoginForm() {
   const [state, action, isPending] = useActionState(loginAction, initialState);
 
   return (
-    <form action={action}>
-      <h1>Log in</h1>
+    <form action={action} className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="email">Email</Label>
 
-      <div>
-        <label htmlFor="email">Email</label>
-
-        <input
+        <Input
           id="email"
           name="email"
           type="email"
           autoComplete="email"
+          placeholder="you@example.com"
           required
         />
       </div>
 
-      <div>
-        <label htmlFor="password">Password</label>
+      <div className="space-y-2">
+        <Label htmlFor="password">Password</Label>
 
-        <input
+        <Input
           id="password"
           name="password"
           type="password"
@@ -41,11 +46,15 @@ export function LoginForm() {
         />
       </div>
 
-      {state.error && <p role="alert">{state.error}</p>}
+      {state.error && (
+        <p role="alert" className="text-sm text-destructive">
+          {state.error}
+        </p>
+      )}
 
-      <button type="submit" disabled={isPending}>
-        {isPending ? "Logging in..." : "Log in"}
-      </button>
+      <Button type="submit" className="w-full" disabled={isPending}>
+        {isPending ? "Signing in..." : "Sign in"}
+      </Button>
     </form>
   );
 }

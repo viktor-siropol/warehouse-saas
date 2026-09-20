@@ -2,6 +2,10 @@
 
 import { useActionState } from "react";
 
+import { Power } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+
 import { setWarehouseActiveAction } from "../actions";
 
 import type { WarehouseActionState } from "../types";
@@ -32,16 +36,22 @@ export function WarehouseStatusButton({
   const [state, formAction, pending] = useActionState(action, initialState);
 
   return (
-    <div>
+    <div className="space-y-2">
       <form action={formAction}>
-        <button type="submit" disabled={pending}>
+        <Button type="submit" variant="outline" size="sm" disabled={pending}>
+          <Power className="size-4" />
+
           {pending ? "Updating..." : isActive ? "Deactivate" : "Activate"}
-        </button>
+        </Button>
       </form>
 
-      {state.error && <p role="alert">{state.error}</p>}
+      {state.error && (
+        <p role="alert" className="max-w-64 text-xs text-destructive">
+          {state.error}
+        </p>
+      )}
 
-      {state.success && <p>{state.success}</p>}
+      {state.success && <p className="text-xs text-success">{state.success}</p>}
     </div>
   );
 }

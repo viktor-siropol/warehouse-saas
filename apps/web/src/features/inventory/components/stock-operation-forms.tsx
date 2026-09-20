@@ -2,6 +2,18 @@
 
 import { useActionState } from "react";
 
+import { ArrowRightLeft, Minus, Plus, SlidersHorizontal } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+
+import { Input } from "@/components/ui/input";
+
+import { Label } from "@/components/ui/label";
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+import type { Warehouse } from "@/features/warehouses/types";
+
 import {
   adjustStockAction,
   issueStockAction,
@@ -10,8 +22,6 @@ import {
 } from "../actions";
 
 import type { InventoryActionState, InventoryItem } from "../types";
-
-import type { Warehouse } from "@/features/warehouses/types";
 
 type StockOperationFormsProps = {
   organizationId: string;
@@ -29,10 +39,38 @@ const initialState: InventoryActionState = {
 function Status({ state }: { state: InventoryActionState }) {
   return (
     <>
-      {state.error && <p role="alert">{state.error}</p>}
+      {state.error && (
+        <p role="alert" className="text-sm text-destructive">
+          {state.error}
+        </p>
+      )}
 
-      {state.success && <p>{state.success}</p>}
+      {state.success && <p className="text-sm text-success">{state.success}</p>}
     </>
+  );
+}
+
+function ProductSelect({ items }: { items: InventoryItem[] }) {
+  return (
+    <div className="space-y-2">
+      <Label>Product</Label>
+
+      <select
+        name="productId"
+        required
+        className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/20"
+      >
+        <option value="">Select product</option>
+
+        {items.map((item) => (
+          <option key={item.product.id} value={item.product.id}>
+            {item.product.sku}
+            {" — "}
+            {item.product.name}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 }
 
@@ -86,114 +124,197 @@ export function StockOperationForms({
   );
 
   return (
-    <section>
-      <h2>Stock operations</h2>
+    <Tabs defaultValue="receipt" className="w-full">
+      <TabsList className="grid w-full grid-cols-3 md:w-auto md:grid-cols-4">
+        <TabsTrigger value="receipt">
+          <Plus className="size-4" />
+          Receipt
+        </TabsTrigger>
 
-      <form action={receiveFormAction}>
-        <h3>Receipt</h3>
+        <TabsTrigger value="issue">
+          <Minus className="size-4" />
+          Issue
+        </TabsTrigger>
 
-        <ProductSelect items={items} />
+        <TabsTrigger value="transfer">
+          <ArrowRightLeft className="size-4" />
+          Transfer
+        </TabsTrigger>
 
-        <input name="quantity" placeholder="10.000" required />
+        {canAdjust && (
+          <TabsTrigger value="adjustment">
+            <SlidersHorizontal className="size-4" />
+            Adjust
+          </TabsTrigger>
+        )}
+      </TabsList>
 
-        <input name="note" placeholder="Supplier delivery" maxLength={500} />
-
-        <button disabled={receivePending}>
-          {receivePending ? "Receiving..." : "Receive stock"}
-        </button>
-
-        <Status state={receiveState} />
-      </form>
-
-      <form action={issueFormAction}>
-        <h3>Issue</h3>
-
-        <ProductSelect items={items} />
-
-        <input name="quantity" placeholder="2.000" required />
-
-        <input name="note" placeholder="Customer shipment" maxLength={500} />
-
-        <button disabled={issuePending}>
-          {issuePending ? "Issuing..." : "Issue stock"}
-        </button>
-
-        <Status state={issueState} />
-      </form>
-
-      {canAdjust && (
-        <form action={adjustmentFormAction}>
-          <h3>Adjustment</h3>
-
+      <TabsContent value="receipt">
+        <form
+          action={receiveFormAction}
+          className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-4"
+        >
           <ProductSelect items={items} />
 
-          <input name="delta" placeholder="-1.000 or 2.000" required />
+          <div className="space-y-2">
+            <Label>Quantity</Label>
 
-          <input
-            name="note"
-            placeholder="Reason for adjustment"
-            minLength={3}
-            maxLength={500}
-            required
-          />
+            <Input name="quantity" placeholder="10.000" required />
+          </div>
 
-          <button disabled={adjustmentPending}>
-            {adjustmentPending ? "Adjusting..." : "Adjust stock"}
-          </button>
+          <div className="space-y-2">
+            <Label>Note</Label>
 
-          <Status state={adjustmentState} />
+            <Input
+              name="note"
+              placeholder="Supplier delivery"
+              maxLength={500}
+            />
+          </div>
+
+          <div className="flex items-end">
+            <Button className="w-full" disabled={receivePending}>
+              {receivePending ? "Receiving..." : "Receive stock"}
+            </Button>
+          </div>
+
+          <div className="md:col-span-2 xl:col-span-4">
+            <Status state={receiveState} />
+          </div>
         </form>
+      </TabsContent>
+
+      <TabsContent value="issue">
+        <form
+          action={issueFormAction}
+          className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-4"
+        >
+          <ProductSelect items={items} />
+
+          <div className="space-y-2">
+            <Label>Quantity</Label>
+
+            <Input name="quantity" placeholder="2.000" required />
+          </div>
+
+          <div className="space-y-2">
+            <Label>Note</Label>
+
+            <Input
+              name="note"
+              placeholder="Customer shipment"
+              maxLength={500}
+            />
+          </div>
+
+          <div className="flex items-end">
+            <Button className="w-full" disabled={issuePending}>
+              {issuePending ? "Issuing..." : "Issue stock"}
+            </Button>
+          </div>
+
+          <div className="md:col-span-2 xl:col-span-4">
+            <Status state={issueState} />
+          </div>
+        </form>
+      </TabsContent>
+
+      <TabsContent value="transfer">
+        <form
+          action={transferFormAction}
+          className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-4"
+        >
+          <ProductSelect items={items} />
+
+          <div className="space-y-2">
+            <Label>Destination</Label>
+
+            <select
+              name="toWarehouseId"
+              required
+              className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/20"
+            >
+              <option value="">Select warehouse</option>
+
+              {activeDestinations.map((warehouse) => (
+                <option key={warehouse.id} value={warehouse.id}>
+                  {warehouse.code}
+                  {" — "}
+                  {warehouse.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="space-y-2">
+            <Label>Quantity</Label>
+
+            <Input name="quantity" placeholder="1.000" required />
+          </div>
+
+          <div className="flex items-end">
+            <Button
+              className="w-full"
+              disabled={transferPending || activeDestinations.length === 0}
+            >
+              {transferPending ? "Transferring..." : "Transfer stock"}
+            </Button>
+          </div>
+
+          <div className="space-y-2 md:col-span-2 xl:col-span-4">
+            <Label>Note</Label>
+
+            <Input
+              name="note"
+              placeholder="Optional transfer reason"
+              maxLength={500}
+            />
+          </div>
+
+          <div className="md:col-span-2 xl:col-span-4">
+            <Status state={transferState} />
+          </div>
+        </form>
+      </TabsContent>
+
+      {canAdjust && (
+        <TabsContent value="adjustment">
+          <form
+            action={adjustmentFormAction}
+            className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-4"
+          >
+            <ProductSelect items={items} />
+
+            <div className="space-y-2">
+              <Label>Delta</Label>
+
+              <Input name="delta" placeholder="-1.000 or 2.000" required />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Reason</Label>
+
+              <Input
+                name="note"
+                placeholder="Physical count correction"
+                minLength={3}
+                maxLength={500}
+                required
+              />
+            </div>
+
+            <div className="flex items-end">
+              <Button className="w-full" disabled={adjustmentPending}>
+                {adjustmentPending ? "Adjusting..." : "Adjust stock"}
+              </Button>
+            </div>
+
+            <div className="md:col-span-2 xl:col-span-4">
+              <Status state={adjustmentState} />
+            </div>
+          </form>
+        </TabsContent>
       )}
-
-      <form action={transferFormAction}>
-        <h3>Transfer</h3>
-
-        <ProductSelect items={items} />
-
-        <label>Destination warehouse</label>
-
-        <select name="toWarehouseId" required>
-          <option value="">Select warehouse</option>
-
-          {activeDestinations.map((warehouse) => (
-            <option key={warehouse.id} value={warehouse.id}>
-              {warehouse.code}
-              {" — "}
-              {warehouse.name}
-            </option>
-          ))}
-        </select>
-
-        <input name="quantity" placeholder="1.000" required />
-
-        <input name="note" placeholder="Transfer reason" maxLength={500} />
-
-        <button disabled={transferPending || activeDestinations.length === 0}>
-          {transferPending ? "Transferring..." : "Transfer stock"}
-        </button>
-
-        <Status state={transferState} />
-      </form>
-    </section>
-  );
-}
-
-function ProductSelect({ items }: { items: InventoryItem[] }) {
-  return (
-    <>
-      <label>Product</label>
-
-      <select name="productId" required>
-        <option value="">Select product</option>
-
-        {items.map((item) => (
-          <option key={item.product.id} value={item.product.id}>
-            {item.product.sku}
-            {" — "}
-            {item.product.name}
-          </option>
-        ))}
-      </select>
-    </>
+    </Tabs>
   );
 }
