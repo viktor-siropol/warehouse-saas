@@ -6,6 +6,8 @@ import { PrismaModule } from '../prisma/prisma.module.js';
 
 import { InventoryController } from './inventory.controller.js';
 
+import { InventorySettingsService } from './inventory-settings.service.js';
+
 import { InventoryService } from './inventory.service.js';
 
 @Module({
@@ -13,6 +15,6 @@ import { InventoryService } from './inventory.service.js';
 
   controllers: [InventoryController],
 
-  providers: [InventoryService],
+  providers: [InventoryService, InventorySettingsService],
 })
 export class InventoryModule {}
