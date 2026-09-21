@@ -19,6 +19,9 @@ import { ProductsModule } from './products/products.module.js';
 import { StockMovementsModule } from './stock-movements/stock-movements.module.js';
 
 import { WarehousesModule } from './warehouses/warehouses.module.js';
+import { SuppliersModule } from './suppliers/suppliers.module.js';
+import { PurchaseOrdersModule } from './purchase-orders/purchase-orders.module.js';
+
 
 @Module({
   imports: [
@@ -33,6 +36,8 @@ import { WarehousesModule } from './warehouses/warehouses.module.js';
     WarehousesModule,
     InventoryModule,
     StockMovementsModule,
+    SuppliersModule,
+    PurchaseOrdersModule,
   ],
 
   controllers: [AppController],
