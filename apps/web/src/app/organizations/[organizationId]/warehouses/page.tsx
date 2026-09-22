@@ -1,42 +1,33 @@
+import Link from "next/link";
+
+import { ArrowRight, Warehouse } from "lucide-react";
+
 import { PageHeader } from "@/components/layout/page-header";
 
 import { Badge } from "@/components/ui/badge";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { getCurrentUser } from "@/features/auth/get-current-user";
 
-import { getWarehouseInventory } from "@/features/inventory/api/get-warehouse-inventory";
-
-import { ReorderPointForm } from "@/features/inventory/components/reorder-point-form";
-
-import { StockOperationForms } from "@/features/inventory/components/stock-operation-forms";
-
 import { getWarehouses } from "@/features/warehouses/api/get-warehouses";
 
-type InventoryPageProps = {
+import { CreateWarehouseForm } from "@/features/warehouses/components/create-warehouse-form";
+
+import { WarehouseStatusButton } from "@/features/warehouses/components/warehouse-status-button";
+
+type WarehousesPageProps = {
   params: Promise<{
     organizationId: string;
-
-    warehouseId: string;
   }>;
 };
 
-export default async function InventoryPage({ params }: InventoryPageProps) {
-  const { organizationId, warehouseId } = await params;
+export default async function WarehousesPage({ params }: WarehousesPageProps) {
+  const { organizationId } = await params;
 
-  const [inventory, warehouses, user] = await Promise.all([
-    getWarehouseInventory(organizationId, warehouseId),
-
+  const [warehouses, user] = await Promise.all([
     getWarehouses(organizationId),
 
     getCurrentUser(),
@@ -51,104 +42,85 @@ export default async function InventoryPage({ params }: InventoryPageProps) {
   return (
     <>
       <PageHeader
-        title={inventory.warehouse.name}
-        description={`${inventory.warehouse.code} · Inventory operations and stock levels`}
-        actions={<Badge variant="secondary">Active warehouse</Badge>}
+        title="Warehouses"
+        description="Manage physical warehouse locations and access their inventory."
       />
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Stock operations</CardTitle>
-        </CardHeader>
+      {canManage && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Create warehouse</CardTitle>
+          </CardHeader>
 
-        <CardContent>
-          <StockOperationForms
-            organizationId={organizationId}
-            warehouseId={warehouseId}
-            items={inventory.items}
-            warehouses={warehouses}
-            canAdjust={canManage}
-          />
-        </CardContent>
-      </Card>
+          <CardContent>
+            <CreateWarehouseForm organizationId={organizationId} />
+          </CardContent>
+        </Card>
+      )}
 
-      <section className="space-y-3">
-        <div>
-          <h2 className="text-base font-semibold">Inventory</h2>
+      {warehouses.length === 0 ? (
+        <div className="flex min-h-52 flex-col items-center justify-center rounded-lg border border-dashed bg-muted/20 text-center">
+          <Warehouse className="mb-3 size-8 text-muted-foreground" />
 
-          <p className="text-sm text-muted-foreground">
-            Current product quantities and reorder thresholds.
+          <p className="font-medium">No warehouses yet</p>
+
+          <p className="mt-1 max-w-sm text-sm text-muted-foreground">
+            Create a warehouse to start tracking inventory at a physical
+            location.
           </p>
         </div>
+      ) : (
+        <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
+          {warehouses.map((warehouse) => (
+            <Card key={warehouse.id} className="flex flex-col">
+              <CardHeader>
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <CardTitle className="truncate text-base">
+                      {warehouse.name}
+                    </CardTitle>
 
-        <div className="overflow-hidden rounded-lg border bg-card">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>SKU</TableHead>
+                    <p className="mt-1 font-mono text-xs text-muted-foreground">
+                      {warehouse.code}
+                    </p>
+                  </div>
 
-                <TableHead>Product</TableHead>
+                  <Badge variant={warehouse.isActive ? "secondary" : "outline"}>
+                    {warehouse.isActive ? "Active" : "Inactive"}
+                  </Badge>
+                </div>
+              </CardHeader>
 
-                <TableHead>Category</TableHead>
+              <CardContent className="flex flex-1 flex-col justify-between gap-5">
+                <p className="text-sm text-muted-foreground">
+                  {warehouse.address ?? "No address provided"}
+                </p>
 
-                <TableHead className="text-right">Quantity</TableHead>
+                <div className="flex flex-wrap items-center gap-2">
+                  {warehouse.isActive && (
+                    <Button asChild size="sm">
+                      <Link
+                        href={`/organizations/${organizationId}/warehouses/${warehouse.id}/inventory`}
+                      >
+                        Open inventory
+                        <ArrowRight className="size-4" />
+                      </Link>
+                    </Button>
+                  )}
 
-                <TableHead className="w-56">Reorder point</TableHead>
-              </TableRow>
-            </TableHeader>
-
-            <TableBody>
-              {inventory.items.map((item) => {
-                const lowStock =
-                  Number(item.reorderPoint) > 0 &&
-                  Number(item.quantity) <= Number(item.reorderPoint);
-
-                return (
-                  <TableRow key={item.product.id}>
-                    <TableCell className="font-mono text-xs font-medium">
-                      {item.product.sku}
-                    </TableCell>
-
-                    <TableCell className="font-medium">
-                      {item.product.name}
-                    </TableCell>
-
-                    <TableCell>{item.product.category.name}</TableCell>
-
-                    <TableCell className="text-right font-mono">
-                      <div className="flex items-center justify-end gap-2">
-                        {item.quantity}
-
-                        {lowStock && (
-                          <Badge
-                            variant="outline"
-                            className="border-warning/30 bg-warning/10 text-warning"
-                          >
-                            Low
-                          </Badge>
-                        )}
-                      </div>
-                    </TableCell>
-
-                    <TableCell>
-                      {canManage ? (
-                        <ReorderPointForm
-                          organizationId={organizationId}
-                          warehouseId={warehouseId}
-                          productId={item.product.id}
-                          currentValue={item.reorderPoint}
-                        />
-                      ) : (
-                        <span className="font-mono">{item.reorderPoint}</span>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
+                  {canManage && (
+                    <WarehouseStatusButton
+                      organizationId={organizationId}
+                      warehouseId={warehouse.id}
+                      isActive={warehouse.isActive}
+                    />
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
-      </section>
+      )}
     </>
   );
 }

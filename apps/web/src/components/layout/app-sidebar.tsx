@@ -13,6 +13,8 @@ import {
   Package,
   TriangleAlert,
   Warehouse,
+  ClipboardList,
+  Truck,
 } from "lucide-react";
 
 import { logoutAction } from "@/features/auth/actions";
@@ -171,13 +173,52 @@ export function AppSidebar({ user, organizationId }: AppSidebarProps) {
                     >
                       <Link href={item.href}>
                         <Icon />
-
                         <span>{item.label}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 );
               })}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Procurement</SidebarGroupLabel>
+
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={pathname.startsWith(
+                    `/organizations/${organizationId}/suppliers`,
+                  )}
+                  tooltip="Suppliers"
+                >
+                  <Link href={`/organizations/${organizationId}/suppliers`}>
+                    <Truck />
+                    <span>Suppliers</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={pathname.startsWith(
+                    `/organizations/${organizationId}/purchase-orders`,
+                  )}
+                  tooltip="Purchase orders"
+                >
+                  <Link
+                    href={`/organizations/${organizationId}/purchase-orders`}
+                  >
+                    <ClipboardList />
+                    <span>Purchase orders</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
