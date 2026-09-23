@@ -39,3 +39,16 @@ export const PurchaseOrderStatus = {
 } as const
 
 export type PurchaseOrderStatus = (typeof PurchaseOrderStatus)[keyof typeof PurchaseOrderStatus]
+
+
+export const SalesOrderStatus = {
+  DRAFT: 'DRAFT',
+  CONFIRMED: 'CONFIRMED',
+  PARTIALLY_RESERVED: 'PARTIALLY_RESERVED',
+  RESERVED: 'RESERVED',
+  PARTIALLY_FULFILLED: 'PARTIALLY_FULFILLED',
+  FULFILLED: 'FULFILLED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type SalesOrderStatus = (typeof SalesOrderStatus)[keyof typeof SalesOrderStatus]

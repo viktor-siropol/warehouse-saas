@@ -211,6 +211,8 @@ export type WarehouseWhereInput = {
   stockMovements?: Prisma.StockMovementListRelationFilter
   purchaseOrders?: Prisma.PurchaseOrderListRelationFilter
   purchaseReceipts?: Prisma.PurchaseReceiptListRelationFilter
+  salesOrders?: Prisma.SalesOrderListRelationFilter
+  salesFulfillments?: Prisma.SalesFulfillmentListRelationFilter
 }
 
 export type WarehouseOrderByWithRelationInput = {
@@ -227,6 +229,8 @@ export type WarehouseOrderByWithRelationInput = {
   stockMovements?: Prisma.StockMovementOrderByRelationAggregateInput
   purchaseOrders?: Prisma.PurchaseOrderOrderByRelationAggregateInput
   purchaseReceipts?: Prisma.PurchaseReceiptOrderByRelationAggregateInput
+  salesOrders?: Prisma.SalesOrderOrderByRelationAggregateInput
+  salesFulfillments?: Prisma.SalesFulfillmentOrderByRelationAggregateInput
 }
 
 export type WarehouseWhereUniqueInput = Prisma.AtLeast<{
@@ -247,6 +251,8 @@ export type WarehouseWhereUniqueInput = Prisma.AtLeast<{
   stockMovements?: Prisma.StockMovementListRelationFilter
   purchaseOrders?: Prisma.PurchaseOrderListRelationFilter
   purchaseReceipts?: Prisma.PurchaseReceiptListRelationFilter
+  salesOrders?: Prisma.SalesOrderListRelationFilter
+  salesFulfillments?: Prisma.SalesFulfillmentListRelationFilter
 }, "id" | "organizationId_code">
 
 export type WarehouseOrderByWithAggregationInput = {
@@ -290,6 +296,8 @@ export type WarehouseCreateInput = {
   stockMovements?: Prisma.StockMovementCreateNestedManyWithoutWarehouseInput
   purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutWarehouseInput
   purchaseReceipts?: Prisma.PurchaseReceiptCreateNestedManyWithoutWarehouseInput
+  salesOrders?: Prisma.SalesOrderCreateNestedManyWithoutWarehouseInput
+  salesFulfillments?: Prisma.SalesFulfillmentCreateNestedManyWithoutWarehouseInput
 }
 
 export type WarehouseUncheckedCreateInput = {
@@ -305,6 +313,8 @@ export type WarehouseUncheckedCreateInput = {
   stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutWarehouseInput
   purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutWarehouseInput
   purchaseReceipts?: Prisma.PurchaseReceiptUncheckedCreateNestedManyWithoutWarehouseInput
+  salesOrders?: Prisma.SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
+  salesFulfillments?: Prisma.SalesFulfillmentUncheckedCreateNestedManyWithoutWarehouseInput
 }
 
 export type WarehouseUpdateInput = {
@@ -320,6 +330,8 @@ export type WarehouseUpdateInput = {
   stockMovements?: Prisma.StockMovementUpdateManyWithoutWarehouseNestedInput
   purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutWarehouseNestedInput
   purchaseReceipts?: Prisma.PurchaseReceiptUpdateManyWithoutWarehouseNestedInput
+  salesOrders?: Prisma.SalesOrderUpdateManyWithoutWarehouseNestedInput
+  salesFulfillments?: Prisma.SalesFulfillmentUpdateManyWithoutWarehouseNestedInput
 }
 
 export type WarehouseUncheckedUpdateInput = {
@@ -335,6 +347,8 @@ export type WarehouseUncheckedUpdateInput = {
   stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutWarehouseNestedInput
   purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutWarehouseNestedInput
   purchaseReceipts?: Prisma.PurchaseReceiptUncheckedUpdateManyWithoutWarehouseNestedInput
+  salesOrders?: Prisma.SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
+  salesFulfillments?: Prisma.SalesFulfillmentUncheckedUpdateManyWithoutWarehouseNestedInput
 }
 
 export type WarehouseCreateManyInput = {
@@ -528,6 +542,34 @@ export type WarehouseUpdateOneRequiredWithoutPurchaseReceiptsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.WarehouseUpdateToOneWithWhereWithoutPurchaseReceiptsInput, Prisma.WarehouseUpdateWithoutPurchaseReceiptsInput>, Prisma.WarehouseUncheckedUpdateWithoutPurchaseReceiptsInput>
 }
 
+export type WarehouseCreateNestedOneWithoutSalesOrdersInput = {
+  create?: Prisma.XOR<Prisma.WarehouseCreateWithoutSalesOrdersInput, Prisma.WarehouseUncheckedCreateWithoutSalesOrdersInput>
+  connectOrCreate?: Prisma.WarehouseCreateOrConnectWithoutSalesOrdersInput
+  connect?: Prisma.WarehouseWhereUniqueInput
+}
+
+export type WarehouseUpdateOneRequiredWithoutSalesOrdersNestedInput = {
+  create?: Prisma.XOR<Prisma.WarehouseCreateWithoutSalesOrdersInput, Prisma.WarehouseUncheckedCreateWithoutSalesOrdersInput>
+  connectOrCreate?: Prisma.WarehouseCreateOrConnectWithoutSalesOrdersInput
+  upsert?: Prisma.WarehouseUpsertWithoutSalesOrdersInput
+  connect?: Prisma.WarehouseWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WarehouseUpdateToOneWithWhereWithoutSalesOrdersInput, Prisma.WarehouseUpdateWithoutSalesOrdersInput>, Prisma.WarehouseUncheckedUpdateWithoutSalesOrdersInput>
+}
+
+export type WarehouseCreateNestedOneWithoutSalesFulfillmentsInput = {
+  create?: Prisma.XOR<Prisma.WarehouseCreateWithoutSalesFulfillmentsInput, Prisma.WarehouseUncheckedCreateWithoutSalesFulfillmentsInput>
+  connectOrCreate?: Prisma.WarehouseCreateOrConnectWithoutSalesFulfillmentsInput
+  connect?: Prisma.WarehouseWhereUniqueInput
+}
+
+export type WarehouseUpdateOneRequiredWithoutSalesFulfillmentsNestedInput = {
+  create?: Prisma.XOR<Prisma.WarehouseCreateWithoutSalesFulfillmentsInput, Prisma.WarehouseUncheckedCreateWithoutSalesFulfillmentsInput>
+  connectOrCreate?: Prisma.WarehouseCreateOrConnectWithoutSalesFulfillmentsInput
+  upsert?: Prisma.WarehouseUpsertWithoutSalesFulfillmentsInput
+  connect?: Prisma.WarehouseWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WarehouseUpdateToOneWithWhereWithoutSalesFulfillmentsInput, Prisma.WarehouseUpdateWithoutSalesFulfillmentsInput>, Prisma.WarehouseUncheckedUpdateWithoutSalesFulfillmentsInput>
+}
+
 export type WarehouseCreateWithoutOrganizationInput = {
   id?: string
   name: string
@@ -540,6 +582,8 @@ export type WarehouseCreateWithoutOrganizationInput = {
   stockMovements?: Prisma.StockMovementCreateNestedManyWithoutWarehouseInput
   purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutWarehouseInput
   purchaseReceipts?: Prisma.PurchaseReceiptCreateNestedManyWithoutWarehouseInput
+  salesOrders?: Prisma.SalesOrderCreateNestedManyWithoutWarehouseInput
+  salesFulfillments?: Prisma.SalesFulfillmentCreateNestedManyWithoutWarehouseInput
 }
 
 export type WarehouseUncheckedCreateWithoutOrganizationInput = {
@@ -554,6 +598,8 @@ export type WarehouseUncheckedCreateWithoutOrganizationInput = {
   stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutWarehouseInput
   purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutWarehouseInput
   purchaseReceipts?: Prisma.PurchaseReceiptUncheckedCreateNestedManyWithoutWarehouseInput
+  salesOrders?: Prisma.SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
+  salesFulfillments?: Prisma.SalesFulfillmentUncheckedCreateNestedManyWithoutWarehouseInput
 }
 
 export type WarehouseCreateOrConnectWithoutOrganizationInput = {
@@ -608,6 +654,8 @@ export type WarehouseCreateWithoutInventoriesInput = {
   stockMovements?: Prisma.StockMovementCreateNestedManyWithoutWarehouseInput
   purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutWarehouseInput
   purchaseReceipts?: Prisma.PurchaseReceiptCreateNestedManyWithoutWarehouseInput
+  salesOrders?: Prisma.SalesOrderCreateNestedManyWithoutWarehouseInput
+  salesFulfillments?: Prisma.SalesFulfillmentCreateNestedManyWithoutWarehouseInput
 }
 
 export type WarehouseUncheckedCreateWithoutInventoriesInput = {
@@ -622,6 +670,8 @@ export type WarehouseUncheckedCreateWithoutInventoriesInput = {
   stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutWarehouseInput
   purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutWarehouseInput
   purchaseReceipts?: Prisma.PurchaseReceiptUncheckedCreateNestedManyWithoutWarehouseInput
+  salesOrders?: Prisma.SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
+  salesFulfillments?: Prisma.SalesFulfillmentUncheckedCreateNestedManyWithoutWarehouseInput
 }
 
 export type WarehouseCreateOrConnectWithoutInventoriesInput = {
@@ -652,6 +702,8 @@ export type WarehouseUpdateWithoutInventoriesInput = {
   stockMovements?: Prisma.StockMovementUpdateManyWithoutWarehouseNestedInput
   purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutWarehouseNestedInput
   purchaseReceipts?: Prisma.PurchaseReceiptUpdateManyWithoutWarehouseNestedInput
+  salesOrders?: Prisma.SalesOrderUpdateManyWithoutWarehouseNestedInput
+  salesFulfillments?: Prisma.SalesFulfillmentUpdateManyWithoutWarehouseNestedInput
 }
 
 export type WarehouseUncheckedUpdateWithoutInventoriesInput = {
@@ -666,6 +718,8 @@ export type WarehouseUncheckedUpdateWithoutInventoriesInput = {
   stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutWarehouseNestedInput
   purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutWarehouseNestedInput
   purchaseReceipts?: Prisma.PurchaseReceiptUncheckedUpdateManyWithoutWarehouseNestedInput
+  salesOrders?: Prisma.SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
+  salesFulfillments?: Prisma.SalesFulfillmentUncheckedUpdateManyWithoutWarehouseNestedInput
 }
 
 export type WarehouseCreateWithoutStockMovementsInput = {
@@ -680,6 +734,8 @@ export type WarehouseCreateWithoutStockMovementsInput = {
   inventories?: Prisma.InventoryCreateNestedManyWithoutWarehouseInput
   purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutWarehouseInput
   purchaseReceipts?: Prisma.PurchaseReceiptCreateNestedManyWithoutWarehouseInput
+  salesOrders?: Prisma.SalesOrderCreateNestedManyWithoutWarehouseInput
+  salesFulfillments?: Prisma.SalesFulfillmentCreateNestedManyWithoutWarehouseInput
 }
 
 export type WarehouseUncheckedCreateWithoutStockMovementsInput = {
@@ -694,6 +750,8 @@ export type WarehouseUncheckedCreateWithoutStockMovementsInput = {
   inventories?: Prisma.InventoryUncheckedCreateNestedManyWithoutWarehouseInput
   purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutWarehouseInput
   purchaseReceipts?: Prisma.PurchaseReceiptUncheckedCreateNestedManyWithoutWarehouseInput
+  salesOrders?: Prisma.SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
+  salesFulfillments?: Prisma.SalesFulfillmentUncheckedCreateNestedManyWithoutWarehouseInput
 }
 
 export type WarehouseCreateOrConnectWithoutStockMovementsInput = {
@@ -724,6 +782,8 @@ export type WarehouseUpdateWithoutStockMovementsInput = {
   inventories?: Prisma.InventoryUpdateManyWithoutWarehouseNestedInput
   purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutWarehouseNestedInput
   purchaseReceipts?: Prisma.PurchaseReceiptUpdateManyWithoutWarehouseNestedInput
+  salesOrders?: Prisma.SalesOrderUpdateManyWithoutWarehouseNestedInput
+  salesFulfillments?: Prisma.SalesFulfillmentUpdateManyWithoutWarehouseNestedInput
 }
 
 export type WarehouseUncheckedUpdateWithoutStockMovementsInput = {
@@ -738,6 +798,8 @@ export type WarehouseUncheckedUpdateWithoutStockMovementsInput = {
   inventories?: Prisma.InventoryUncheckedUpdateManyWithoutWarehouseNestedInput
   purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutWarehouseNestedInput
   purchaseReceipts?: Prisma.PurchaseReceiptUncheckedUpdateManyWithoutWarehouseNestedInput
+  salesOrders?: Prisma.SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
+  salesFulfillments?: Prisma.SalesFulfillmentUncheckedUpdateManyWithoutWarehouseNestedInput
 }
 
 export type WarehouseCreateWithoutPurchaseOrdersInput = {
@@ -752,6 +814,8 @@ export type WarehouseCreateWithoutPurchaseOrdersInput = {
   inventories?: Prisma.InventoryCreateNestedManyWithoutWarehouseInput
   stockMovements?: Prisma.StockMovementCreateNestedManyWithoutWarehouseInput
   purchaseReceipts?: Prisma.PurchaseReceiptCreateNestedManyWithoutWarehouseInput
+  salesOrders?: Prisma.SalesOrderCreateNestedManyWithoutWarehouseInput
+  salesFulfillments?: Prisma.SalesFulfillmentCreateNestedManyWithoutWarehouseInput
 }
 
 export type WarehouseUncheckedCreateWithoutPurchaseOrdersInput = {
@@ -766,6 +830,8 @@ export type WarehouseUncheckedCreateWithoutPurchaseOrdersInput = {
   inventories?: Prisma.InventoryUncheckedCreateNestedManyWithoutWarehouseInput
   stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutWarehouseInput
   purchaseReceipts?: Prisma.PurchaseReceiptUncheckedCreateNestedManyWithoutWarehouseInput
+  salesOrders?: Prisma.SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
+  salesFulfillments?: Prisma.SalesFulfillmentUncheckedCreateNestedManyWithoutWarehouseInput
 }
 
 export type WarehouseCreateOrConnectWithoutPurchaseOrdersInput = {
@@ -796,6 +862,8 @@ export type WarehouseUpdateWithoutPurchaseOrdersInput = {
   inventories?: Prisma.InventoryUpdateManyWithoutWarehouseNestedInput
   stockMovements?: Prisma.StockMovementUpdateManyWithoutWarehouseNestedInput
   purchaseReceipts?: Prisma.PurchaseReceiptUpdateManyWithoutWarehouseNestedInput
+  salesOrders?: Prisma.SalesOrderUpdateManyWithoutWarehouseNestedInput
+  salesFulfillments?: Prisma.SalesFulfillmentUpdateManyWithoutWarehouseNestedInput
 }
 
 export type WarehouseUncheckedUpdateWithoutPurchaseOrdersInput = {
@@ -810,6 +878,8 @@ export type WarehouseUncheckedUpdateWithoutPurchaseOrdersInput = {
   inventories?: Prisma.InventoryUncheckedUpdateManyWithoutWarehouseNestedInput
   stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutWarehouseNestedInput
   purchaseReceipts?: Prisma.PurchaseReceiptUncheckedUpdateManyWithoutWarehouseNestedInput
+  salesOrders?: Prisma.SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
+  salesFulfillments?: Prisma.SalesFulfillmentUncheckedUpdateManyWithoutWarehouseNestedInput
 }
 
 export type WarehouseCreateWithoutPurchaseReceiptsInput = {
@@ -824,6 +894,8 @@ export type WarehouseCreateWithoutPurchaseReceiptsInput = {
   inventories?: Prisma.InventoryCreateNestedManyWithoutWarehouseInput
   stockMovements?: Prisma.StockMovementCreateNestedManyWithoutWarehouseInput
   purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutWarehouseInput
+  salesOrders?: Prisma.SalesOrderCreateNestedManyWithoutWarehouseInput
+  salesFulfillments?: Prisma.SalesFulfillmentCreateNestedManyWithoutWarehouseInput
 }
 
 export type WarehouseUncheckedCreateWithoutPurchaseReceiptsInput = {
@@ -838,6 +910,8 @@ export type WarehouseUncheckedCreateWithoutPurchaseReceiptsInput = {
   inventories?: Prisma.InventoryUncheckedCreateNestedManyWithoutWarehouseInput
   stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutWarehouseInput
   purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutWarehouseInput
+  salesOrders?: Prisma.SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
+  salesFulfillments?: Prisma.SalesFulfillmentUncheckedCreateNestedManyWithoutWarehouseInput
 }
 
 export type WarehouseCreateOrConnectWithoutPurchaseReceiptsInput = {
@@ -868,6 +942,8 @@ export type WarehouseUpdateWithoutPurchaseReceiptsInput = {
   inventories?: Prisma.InventoryUpdateManyWithoutWarehouseNestedInput
   stockMovements?: Prisma.StockMovementUpdateManyWithoutWarehouseNestedInput
   purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutWarehouseNestedInput
+  salesOrders?: Prisma.SalesOrderUpdateManyWithoutWarehouseNestedInput
+  salesFulfillments?: Prisma.SalesFulfillmentUpdateManyWithoutWarehouseNestedInput
 }
 
 export type WarehouseUncheckedUpdateWithoutPurchaseReceiptsInput = {
@@ -882,6 +958,168 @@ export type WarehouseUncheckedUpdateWithoutPurchaseReceiptsInput = {
   inventories?: Prisma.InventoryUncheckedUpdateManyWithoutWarehouseNestedInput
   stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutWarehouseNestedInput
   purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutWarehouseNestedInput
+  salesOrders?: Prisma.SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
+  salesFulfillments?: Prisma.SalesFulfillmentUncheckedUpdateManyWithoutWarehouseNestedInput
+}
+
+export type WarehouseCreateWithoutSalesOrdersInput = {
+  id?: string
+  name: string
+  code: string
+  address?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutWarehousesInput
+  inventories?: Prisma.InventoryCreateNestedManyWithoutWarehouseInput
+  stockMovements?: Prisma.StockMovementCreateNestedManyWithoutWarehouseInput
+  purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutWarehouseInput
+  purchaseReceipts?: Prisma.PurchaseReceiptCreateNestedManyWithoutWarehouseInput
+  salesFulfillments?: Prisma.SalesFulfillmentCreateNestedManyWithoutWarehouseInput
+}
+
+export type WarehouseUncheckedCreateWithoutSalesOrdersInput = {
+  id?: string
+  organizationId: string
+  name: string
+  code: string
+  address?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  inventories?: Prisma.InventoryUncheckedCreateNestedManyWithoutWarehouseInput
+  stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutWarehouseInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutWarehouseInput
+  purchaseReceipts?: Prisma.PurchaseReceiptUncheckedCreateNestedManyWithoutWarehouseInput
+  salesFulfillments?: Prisma.SalesFulfillmentUncheckedCreateNestedManyWithoutWarehouseInput
+}
+
+export type WarehouseCreateOrConnectWithoutSalesOrdersInput = {
+  where: Prisma.WarehouseWhereUniqueInput
+  create: Prisma.XOR<Prisma.WarehouseCreateWithoutSalesOrdersInput, Prisma.WarehouseUncheckedCreateWithoutSalesOrdersInput>
+}
+
+export type WarehouseUpsertWithoutSalesOrdersInput = {
+  update: Prisma.XOR<Prisma.WarehouseUpdateWithoutSalesOrdersInput, Prisma.WarehouseUncheckedUpdateWithoutSalesOrdersInput>
+  create: Prisma.XOR<Prisma.WarehouseCreateWithoutSalesOrdersInput, Prisma.WarehouseUncheckedCreateWithoutSalesOrdersInput>
+  where?: Prisma.WarehouseWhereInput
+}
+
+export type WarehouseUpdateToOneWithWhereWithoutSalesOrdersInput = {
+  where?: Prisma.WarehouseWhereInput
+  data: Prisma.XOR<Prisma.WarehouseUpdateWithoutSalesOrdersInput, Prisma.WarehouseUncheckedUpdateWithoutSalesOrdersInput>
+}
+
+export type WarehouseUpdateWithoutSalesOrdersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutWarehousesNestedInput
+  inventories?: Prisma.InventoryUpdateManyWithoutWarehouseNestedInput
+  stockMovements?: Prisma.StockMovementUpdateManyWithoutWarehouseNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutWarehouseNestedInput
+  purchaseReceipts?: Prisma.PurchaseReceiptUpdateManyWithoutWarehouseNestedInput
+  salesFulfillments?: Prisma.SalesFulfillmentUpdateManyWithoutWarehouseNestedInput
+}
+
+export type WarehouseUncheckedUpdateWithoutSalesOrdersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  inventories?: Prisma.InventoryUncheckedUpdateManyWithoutWarehouseNestedInput
+  stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutWarehouseNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutWarehouseNestedInput
+  purchaseReceipts?: Prisma.PurchaseReceiptUncheckedUpdateManyWithoutWarehouseNestedInput
+  salesFulfillments?: Prisma.SalesFulfillmentUncheckedUpdateManyWithoutWarehouseNestedInput
+}
+
+export type WarehouseCreateWithoutSalesFulfillmentsInput = {
+  id?: string
+  name: string
+  code: string
+  address?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutWarehousesInput
+  inventories?: Prisma.InventoryCreateNestedManyWithoutWarehouseInput
+  stockMovements?: Prisma.StockMovementCreateNestedManyWithoutWarehouseInput
+  purchaseOrders?: Prisma.PurchaseOrderCreateNestedManyWithoutWarehouseInput
+  purchaseReceipts?: Prisma.PurchaseReceiptCreateNestedManyWithoutWarehouseInput
+  salesOrders?: Prisma.SalesOrderCreateNestedManyWithoutWarehouseInput
+}
+
+export type WarehouseUncheckedCreateWithoutSalesFulfillmentsInput = {
+  id?: string
+  organizationId: string
+  name: string
+  code: string
+  address?: string | null
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  inventories?: Prisma.InventoryUncheckedCreateNestedManyWithoutWarehouseInput
+  stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutWarehouseInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutWarehouseInput
+  purchaseReceipts?: Prisma.PurchaseReceiptUncheckedCreateNestedManyWithoutWarehouseInput
+  salesOrders?: Prisma.SalesOrderUncheckedCreateNestedManyWithoutWarehouseInput
+}
+
+export type WarehouseCreateOrConnectWithoutSalesFulfillmentsInput = {
+  where: Prisma.WarehouseWhereUniqueInput
+  create: Prisma.XOR<Prisma.WarehouseCreateWithoutSalesFulfillmentsInput, Prisma.WarehouseUncheckedCreateWithoutSalesFulfillmentsInput>
+}
+
+export type WarehouseUpsertWithoutSalesFulfillmentsInput = {
+  update: Prisma.XOR<Prisma.WarehouseUpdateWithoutSalesFulfillmentsInput, Prisma.WarehouseUncheckedUpdateWithoutSalesFulfillmentsInput>
+  create: Prisma.XOR<Prisma.WarehouseCreateWithoutSalesFulfillmentsInput, Prisma.WarehouseUncheckedCreateWithoutSalesFulfillmentsInput>
+  where?: Prisma.WarehouseWhereInput
+}
+
+export type WarehouseUpdateToOneWithWhereWithoutSalesFulfillmentsInput = {
+  where?: Prisma.WarehouseWhereInput
+  data: Prisma.XOR<Prisma.WarehouseUpdateWithoutSalesFulfillmentsInput, Prisma.WarehouseUncheckedUpdateWithoutSalesFulfillmentsInput>
+}
+
+export type WarehouseUpdateWithoutSalesFulfillmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutWarehousesNestedInput
+  inventories?: Prisma.InventoryUpdateManyWithoutWarehouseNestedInput
+  stockMovements?: Prisma.StockMovementUpdateManyWithoutWarehouseNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutWarehouseNestedInput
+  purchaseReceipts?: Prisma.PurchaseReceiptUpdateManyWithoutWarehouseNestedInput
+  salesOrders?: Prisma.SalesOrderUpdateManyWithoutWarehouseNestedInput
+}
+
+export type WarehouseUncheckedUpdateWithoutSalesFulfillmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  inventories?: Prisma.InventoryUncheckedUpdateManyWithoutWarehouseNestedInput
+  stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutWarehouseNestedInput
+  purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutWarehouseNestedInput
+  purchaseReceipts?: Prisma.PurchaseReceiptUncheckedUpdateManyWithoutWarehouseNestedInput
+  salesOrders?: Prisma.SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
 }
 
 export type WarehouseCreateManyOrganizationInput = {
@@ -906,6 +1144,8 @@ export type WarehouseUpdateWithoutOrganizationInput = {
   stockMovements?: Prisma.StockMovementUpdateManyWithoutWarehouseNestedInput
   purchaseOrders?: Prisma.PurchaseOrderUpdateManyWithoutWarehouseNestedInput
   purchaseReceipts?: Prisma.PurchaseReceiptUpdateManyWithoutWarehouseNestedInput
+  salesOrders?: Prisma.SalesOrderUpdateManyWithoutWarehouseNestedInput
+  salesFulfillments?: Prisma.SalesFulfillmentUpdateManyWithoutWarehouseNestedInput
 }
 
 export type WarehouseUncheckedUpdateWithoutOrganizationInput = {
@@ -920,6 +1160,8 @@ export type WarehouseUncheckedUpdateWithoutOrganizationInput = {
   stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutWarehouseNestedInput
   purchaseOrders?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutWarehouseNestedInput
   purchaseReceipts?: Prisma.PurchaseReceiptUncheckedUpdateManyWithoutWarehouseNestedInput
+  salesOrders?: Prisma.SalesOrderUncheckedUpdateManyWithoutWarehouseNestedInput
+  salesFulfillments?: Prisma.SalesFulfillmentUncheckedUpdateManyWithoutWarehouseNestedInput
 }
 
 export type WarehouseUncheckedUpdateManyWithoutOrganizationInput = {
@@ -942,6 +1184,8 @@ export type WarehouseCountOutputType = {
   stockMovements: number
   purchaseOrders: number
   purchaseReceipts: number
+  salesOrders: number
+  salesFulfillments: number
 }
 
 export type WarehouseCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -949,6 +1193,8 @@ export type WarehouseCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensi
   stockMovements?: boolean | WarehouseCountOutputTypeCountStockMovementsArgs
   purchaseOrders?: boolean | WarehouseCountOutputTypeCountPurchaseOrdersArgs
   purchaseReceipts?: boolean | WarehouseCountOutputTypeCountPurchaseReceiptsArgs
+  salesOrders?: boolean | WarehouseCountOutputTypeCountSalesOrdersArgs
+  salesFulfillments?: boolean | WarehouseCountOutputTypeCountSalesFulfillmentsArgs
 }
 
 /**
@@ -989,6 +1235,20 @@ export type WarehouseCountOutputTypeCountPurchaseReceiptsArgs<ExtArgs extends ru
   where?: Prisma.PurchaseReceiptWhereInput
 }
 
+/**
+ * WarehouseCountOutputType without action
+ */
+export type WarehouseCountOutputTypeCountSalesOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SalesOrderWhereInput
+}
+
+/**
+ * WarehouseCountOutputType without action
+ */
+export type WarehouseCountOutputTypeCountSalesFulfillmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SalesFulfillmentWhereInput
+}
+
 
 export type WarehouseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1004,6 +1264,8 @@ export type WarehouseSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   stockMovements?: boolean | Prisma.Warehouse$stockMovementsArgs<ExtArgs>
   purchaseOrders?: boolean | Prisma.Warehouse$purchaseOrdersArgs<ExtArgs>
   purchaseReceipts?: boolean | Prisma.Warehouse$purchaseReceiptsArgs<ExtArgs>
+  salesOrders?: boolean | Prisma.Warehouse$salesOrdersArgs<ExtArgs>
+  salesFulfillments?: boolean | Prisma.Warehouse$salesFulfillmentsArgs<ExtArgs>
   _count?: boolean | Prisma.WarehouseCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["warehouse"]>
 
@@ -1049,6 +1311,8 @@ export type WarehouseInclude<ExtArgs extends runtime.Types.Extensions.InternalAr
   stockMovements?: boolean | Prisma.Warehouse$stockMovementsArgs<ExtArgs>
   purchaseOrders?: boolean | Prisma.Warehouse$purchaseOrdersArgs<ExtArgs>
   purchaseReceipts?: boolean | Prisma.Warehouse$purchaseReceiptsArgs<ExtArgs>
+  salesOrders?: boolean | Prisma.Warehouse$salesOrdersArgs<ExtArgs>
+  salesFulfillments?: boolean | Prisma.Warehouse$salesFulfillmentsArgs<ExtArgs>
   _count?: boolean | Prisma.WarehouseCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type WarehouseIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1066,6 +1330,8 @@ export type $WarehousePayload<ExtArgs extends runtime.Types.Extensions.InternalA
     stockMovements: Prisma.$StockMovementPayload<ExtArgs>[]
     purchaseOrders: Prisma.$PurchaseOrderPayload<ExtArgs>[]
     purchaseReceipts: Prisma.$PurchaseReceiptPayload<ExtArgs>[]
+    salesOrders: Prisma.$SalesOrderPayload<ExtArgs>[]
+    salesFulfillments: Prisma.$SalesFulfillmentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1475,6 +1741,8 @@ export interface Prisma__WarehouseClient<T, Null = never, ExtArgs extends runtim
   stockMovements<T extends Prisma.Warehouse$stockMovementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Warehouse$stockMovementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StockMovementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   purchaseOrders<T extends Prisma.Warehouse$purchaseOrdersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Warehouse$purchaseOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PurchaseOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   purchaseReceipts<T extends Prisma.Warehouse$purchaseReceiptsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Warehouse$purchaseReceiptsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PurchaseReceiptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  salesOrders<T extends Prisma.Warehouse$salesOrdersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Warehouse$salesOrdersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SalesOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  salesFulfillments<T extends Prisma.Warehouse$salesFulfillmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Warehouse$salesFulfillmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SalesFulfillmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2006,6 +2274,54 @@ export type Warehouse$purchaseReceiptsArgs<ExtArgs extends runtime.Types.Extensi
   take?: number
   skip?: number
   distinct?: Prisma.PurchaseReceiptScalarFieldEnum | Prisma.PurchaseReceiptScalarFieldEnum[]
+}
+
+/**
+ * Warehouse.salesOrders
+ */
+export type Warehouse$salesOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SalesOrder
+   */
+  select?: Prisma.SalesOrderSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SalesOrder
+   */
+  omit?: Prisma.SalesOrderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SalesOrderInclude<ExtArgs> | null
+  where?: Prisma.SalesOrderWhereInput
+  orderBy?: Prisma.SalesOrderOrderByWithRelationInput | Prisma.SalesOrderOrderByWithRelationInput[]
+  cursor?: Prisma.SalesOrderWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SalesOrderScalarFieldEnum | Prisma.SalesOrderScalarFieldEnum[]
+}
+
+/**
+ * Warehouse.salesFulfillments
+ */
+export type Warehouse$salesFulfillmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SalesFulfillment
+   */
+  select?: Prisma.SalesFulfillmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SalesFulfillment
+   */
+  omit?: Prisma.SalesFulfillmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SalesFulfillmentInclude<ExtArgs> | null
+  where?: Prisma.SalesFulfillmentWhereInput
+  orderBy?: Prisma.SalesFulfillmentOrderByWithRelationInput | Prisma.SalesFulfillmentOrderByWithRelationInput[]
+  cursor?: Prisma.SalesFulfillmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SalesFulfillmentScalarFieldEnum | Prisma.SalesFulfillmentScalarFieldEnum[]
 }
 
 /**

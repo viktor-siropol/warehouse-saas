@@ -203,6 +203,8 @@ export type UserWhereInput = {
   refreshSessions?: Prisma.RefreshSessionListRelationFilter
   purchaseOrdersCreated?: Prisma.PurchaseOrderListRelationFilter
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptListRelationFilter
+  salesOrdersCreated?: Prisma.SalesOrderListRelationFilter
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -218,6 +220,8 @@ export type UserOrderByWithRelationInput = {
   refreshSessions?: Prisma.RefreshSessionOrderByRelationAggregateInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderOrderByRelationAggregateInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptOrderByRelationAggregateInput
+  salesOrdersCreated?: Prisma.SalesOrderOrderByRelationAggregateInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -236,6 +240,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   refreshSessions?: Prisma.RefreshSessionListRelationFilter
   purchaseOrdersCreated?: Prisma.PurchaseOrderListRelationFilter
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptListRelationFilter
+  salesOrdersCreated?: Prisma.SalesOrderListRelationFilter
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -277,6 +283,8 @@ export type UserCreateInput = {
   refreshSessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptCreateNestedManyWithoutReceivedByInput
+  salesOrdersCreated?: Prisma.SalesOrderCreateNestedManyWithoutCreatedByInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentCreateNestedManyWithoutFulfilledByInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -292,6 +300,8 @@ export type UserUncheckedCreateInput = {
   refreshSessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedCreateNestedManyWithoutReceivedByInput
+  salesOrdersCreated?: Prisma.SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentUncheckedCreateNestedManyWithoutFulfilledByInput
 }
 
 export type UserUpdateInput = {
@@ -307,6 +317,8 @@ export type UserUpdateInput = {
   refreshSessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUpdateManyWithoutReceivedByNestedInput
+  salesOrdersCreated?: Prisma.SalesOrderUpdateManyWithoutCreatedByNestedInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentUpdateManyWithoutFulfilledByNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -322,6 +334,8 @@ export type UserUncheckedUpdateInput = {
   refreshSessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
+  salesOrdersCreated?: Prisma.SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentUncheckedUpdateManyWithoutFulfilledByNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -470,6 +484,38 @@ export type UserUpdateOneWithoutPurchaseReceiptsReceivedNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPurchaseReceiptsReceivedInput, Prisma.UserUpdateWithoutPurchaseReceiptsReceivedInput>, Prisma.UserUncheckedUpdateWithoutPurchaseReceiptsReceivedInput>
 }
 
+export type UserCreateNestedOneWithoutSalesOrdersCreatedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSalesOrdersCreatedInput, Prisma.UserUncheckedCreateWithoutSalesOrdersCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSalesOrdersCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutSalesOrdersCreatedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSalesOrdersCreatedInput, Prisma.UserUncheckedCreateWithoutSalesOrdersCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSalesOrdersCreatedInput
+  upsert?: Prisma.UserUpsertWithoutSalesOrdersCreatedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSalesOrdersCreatedInput, Prisma.UserUpdateWithoutSalesOrdersCreatedInput>, Prisma.UserUncheckedUpdateWithoutSalesOrdersCreatedInput>
+}
+
+export type UserCreateNestedOneWithoutSalesFulfillmentsCreatedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSalesFulfillmentsCreatedInput, Prisma.UserUncheckedCreateWithoutSalesFulfillmentsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSalesFulfillmentsCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutSalesFulfillmentsCreatedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSalesFulfillmentsCreatedInput, Prisma.UserUncheckedCreateWithoutSalesFulfillmentsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSalesFulfillmentsCreatedInput
+  upsert?: Prisma.UserUpsertWithoutSalesFulfillmentsCreatedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSalesFulfillmentsCreatedInput, Prisma.UserUpdateWithoutSalesFulfillmentsCreatedInput>, Prisma.UserUncheckedUpdateWithoutSalesFulfillmentsCreatedInput>
+}
+
 export type UserCreateWithoutRefreshSessionsInput = {
   id?: string
   email: string
@@ -482,6 +528,8 @@ export type UserCreateWithoutRefreshSessionsInput = {
   stockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptCreateNestedManyWithoutReceivedByInput
+  salesOrdersCreated?: Prisma.SalesOrderCreateNestedManyWithoutCreatedByInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentCreateNestedManyWithoutFulfilledByInput
 }
 
 export type UserUncheckedCreateWithoutRefreshSessionsInput = {
@@ -496,6 +544,8 @@ export type UserUncheckedCreateWithoutRefreshSessionsInput = {
   stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedCreateNestedManyWithoutReceivedByInput
+  salesOrdersCreated?: Prisma.SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentUncheckedCreateNestedManyWithoutFulfilledByInput
 }
 
 export type UserCreateOrConnectWithoutRefreshSessionsInput = {
@@ -526,6 +576,8 @@ export type UserUpdateWithoutRefreshSessionsInput = {
   stockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUpdateManyWithoutReceivedByNestedInput
+  salesOrdersCreated?: Prisma.SalesOrderUpdateManyWithoutCreatedByNestedInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentUpdateManyWithoutFulfilledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRefreshSessionsInput = {
@@ -540,6 +592,8 @@ export type UserUncheckedUpdateWithoutRefreshSessionsInput = {
   stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
+  salesOrdersCreated?: Prisma.SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentUncheckedUpdateManyWithoutFulfilledByNestedInput
 }
 
 export type UserCreateWithoutMembershipsInput = {
@@ -554,6 +608,8 @@ export type UserCreateWithoutMembershipsInput = {
   refreshSessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptCreateNestedManyWithoutReceivedByInput
+  salesOrdersCreated?: Prisma.SalesOrderCreateNestedManyWithoutCreatedByInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentCreateNestedManyWithoutFulfilledByInput
 }
 
 export type UserUncheckedCreateWithoutMembershipsInput = {
@@ -568,6 +624,8 @@ export type UserUncheckedCreateWithoutMembershipsInput = {
   refreshSessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedCreateNestedManyWithoutReceivedByInput
+  salesOrdersCreated?: Prisma.SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentUncheckedCreateNestedManyWithoutFulfilledByInput
 }
 
 export type UserCreateOrConnectWithoutMembershipsInput = {
@@ -598,6 +656,8 @@ export type UserUpdateWithoutMembershipsInput = {
   refreshSessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUpdateManyWithoutReceivedByNestedInput
+  salesOrdersCreated?: Prisma.SalesOrderUpdateManyWithoutCreatedByNestedInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentUpdateManyWithoutFulfilledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMembershipsInput = {
@@ -612,6 +672,8 @@ export type UserUncheckedUpdateWithoutMembershipsInput = {
   refreshSessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
+  salesOrdersCreated?: Prisma.SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentUncheckedUpdateManyWithoutFulfilledByNestedInput
 }
 
 export type UserCreateWithoutStockMovementsInput = {
@@ -626,6 +688,8 @@ export type UserCreateWithoutStockMovementsInput = {
   refreshSessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptCreateNestedManyWithoutReceivedByInput
+  salesOrdersCreated?: Prisma.SalesOrderCreateNestedManyWithoutCreatedByInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentCreateNestedManyWithoutFulfilledByInput
 }
 
 export type UserUncheckedCreateWithoutStockMovementsInput = {
@@ -640,6 +704,8 @@ export type UserUncheckedCreateWithoutStockMovementsInput = {
   refreshSessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedCreateNestedManyWithoutReceivedByInput
+  salesOrdersCreated?: Prisma.SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentUncheckedCreateNestedManyWithoutFulfilledByInput
 }
 
 export type UserCreateOrConnectWithoutStockMovementsInput = {
@@ -670,6 +736,8 @@ export type UserUpdateWithoutStockMovementsInput = {
   refreshSessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUpdateManyWithoutReceivedByNestedInput
+  salesOrdersCreated?: Prisma.SalesOrderUpdateManyWithoutCreatedByNestedInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentUpdateManyWithoutFulfilledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStockMovementsInput = {
@@ -684,6 +752,8 @@ export type UserUncheckedUpdateWithoutStockMovementsInput = {
   refreshSessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
+  salesOrdersCreated?: Prisma.SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentUncheckedUpdateManyWithoutFulfilledByNestedInput
 }
 
 export type UserCreateWithoutPurchaseOrdersCreatedInput = {
@@ -698,6 +768,8 @@ export type UserCreateWithoutPurchaseOrdersCreatedInput = {
   stockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   refreshSessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptCreateNestedManyWithoutReceivedByInput
+  salesOrdersCreated?: Prisma.SalesOrderCreateNestedManyWithoutCreatedByInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentCreateNestedManyWithoutFulfilledByInput
 }
 
 export type UserUncheckedCreateWithoutPurchaseOrdersCreatedInput = {
@@ -712,6 +784,8 @@ export type UserUncheckedCreateWithoutPurchaseOrdersCreatedInput = {
   stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   refreshSessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedCreateNestedManyWithoutReceivedByInput
+  salesOrdersCreated?: Prisma.SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentUncheckedCreateNestedManyWithoutFulfilledByInput
 }
 
 export type UserCreateOrConnectWithoutPurchaseOrdersCreatedInput = {
@@ -742,6 +816,8 @@ export type UserUpdateWithoutPurchaseOrdersCreatedInput = {
   stockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   refreshSessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUpdateManyWithoutReceivedByNestedInput
+  salesOrdersCreated?: Prisma.SalesOrderUpdateManyWithoutCreatedByNestedInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentUpdateManyWithoutFulfilledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPurchaseOrdersCreatedInput = {
@@ -756,6 +832,8 @@ export type UserUncheckedUpdateWithoutPurchaseOrdersCreatedInput = {
   stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   refreshSessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
+  salesOrdersCreated?: Prisma.SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentUncheckedUpdateManyWithoutFulfilledByNestedInput
 }
 
 export type UserCreateWithoutPurchaseReceiptsReceivedInput = {
@@ -770,6 +848,8 @@ export type UserCreateWithoutPurchaseReceiptsReceivedInput = {
   stockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   refreshSessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
+  salesOrdersCreated?: Prisma.SalesOrderCreateNestedManyWithoutCreatedByInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentCreateNestedManyWithoutFulfilledByInput
 }
 
 export type UserUncheckedCreateWithoutPurchaseReceiptsReceivedInput = {
@@ -784,6 +864,8 @@ export type UserUncheckedCreateWithoutPurchaseReceiptsReceivedInput = {
   stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   refreshSessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  salesOrdersCreated?: Prisma.SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentUncheckedCreateNestedManyWithoutFulfilledByInput
 }
 
 export type UserCreateOrConnectWithoutPurchaseReceiptsReceivedInput = {
@@ -814,6 +896,8 @@ export type UserUpdateWithoutPurchaseReceiptsReceivedInput = {
   stockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   refreshSessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
+  salesOrdersCreated?: Prisma.SalesOrderUpdateManyWithoutCreatedByNestedInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentUpdateManyWithoutFulfilledByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPurchaseReceiptsReceivedInput = {
@@ -828,6 +912,168 @@ export type UserUncheckedUpdateWithoutPurchaseReceiptsReceivedInput = {
   stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   refreshSessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  salesOrdersCreated?: Prisma.SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentUncheckedUpdateManyWithoutFulfilledByNestedInput
+}
+
+export type UserCreateWithoutSalesOrdersCreatedInput = {
+  id?: string
+  email: string
+  firstName: string
+  lastName: string
+  passwordHash: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.MembershipCreateNestedManyWithoutUserInput
+  stockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
+  refreshSessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
+  purchaseOrdersCreated?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
+  purchaseReceiptsReceived?: Prisma.PurchaseReceiptCreateNestedManyWithoutReceivedByInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentCreateNestedManyWithoutFulfilledByInput
+}
+
+export type UserUncheckedCreateWithoutSalesOrdersCreatedInput = {
+  id?: string
+  email: string
+  firstName: string
+  lastName: string
+  passwordHash: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutUserInput
+  stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
+  refreshSessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
+  purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedCreateNestedManyWithoutReceivedByInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentUncheckedCreateNestedManyWithoutFulfilledByInput
+}
+
+export type UserCreateOrConnectWithoutSalesOrdersCreatedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSalesOrdersCreatedInput, Prisma.UserUncheckedCreateWithoutSalesOrdersCreatedInput>
+}
+
+export type UserUpsertWithoutSalesOrdersCreatedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSalesOrdersCreatedInput, Prisma.UserUncheckedUpdateWithoutSalesOrdersCreatedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSalesOrdersCreatedInput, Prisma.UserUncheckedCreateWithoutSalesOrdersCreatedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSalesOrdersCreatedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSalesOrdersCreatedInput, Prisma.UserUncheckedUpdateWithoutSalesOrdersCreatedInput>
+}
+
+export type UserUpdateWithoutSalesOrdersCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.MembershipUpdateManyWithoutUserNestedInput
+  stockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
+  refreshSessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
+  purchaseOrdersCreated?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
+  purchaseReceiptsReceived?: Prisma.PurchaseReceiptUpdateManyWithoutReceivedByNestedInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentUpdateManyWithoutFulfilledByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSalesOrdersCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutUserNestedInput
+  stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
+  refreshSessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
+  purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentUncheckedUpdateManyWithoutFulfilledByNestedInput
+}
+
+export type UserCreateWithoutSalesFulfillmentsCreatedInput = {
+  id?: string
+  email: string
+  firstName: string
+  lastName: string
+  passwordHash: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.MembershipCreateNestedManyWithoutUserInput
+  stockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
+  refreshSessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
+  purchaseOrdersCreated?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
+  purchaseReceiptsReceived?: Prisma.PurchaseReceiptCreateNestedManyWithoutReceivedByInput
+  salesOrdersCreated?: Prisma.SalesOrderCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutSalesFulfillmentsCreatedInput = {
+  id?: string
+  email: string
+  firstName: string
+  lastName: string
+  passwordHash: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutUserInput
+  stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
+  refreshSessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
+  purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedCreateNestedManyWithoutReceivedByInput
+  salesOrdersCreated?: Prisma.SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutSalesFulfillmentsCreatedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSalesFulfillmentsCreatedInput, Prisma.UserUncheckedCreateWithoutSalesFulfillmentsCreatedInput>
+}
+
+export type UserUpsertWithoutSalesFulfillmentsCreatedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSalesFulfillmentsCreatedInput, Prisma.UserUncheckedUpdateWithoutSalesFulfillmentsCreatedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSalesFulfillmentsCreatedInput, Prisma.UserUncheckedCreateWithoutSalesFulfillmentsCreatedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSalesFulfillmentsCreatedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSalesFulfillmentsCreatedInput, Prisma.UserUncheckedUpdateWithoutSalesFulfillmentsCreatedInput>
+}
+
+export type UserUpdateWithoutSalesFulfillmentsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.MembershipUpdateManyWithoutUserNestedInput
+  stockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
+  refreshSessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
+  purchaseOrdersCreated?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
+  purchaseReceiptsReceived?: Prisma.PurchaseReceiptUpdateManyWithoutReceivedByNestedInput
+  salesOrdersCreated?: Prisma.SalesOrderUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSalesFulfillmentsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutUserNestedInput
+  stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
+  refreshSessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
+  purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
+  salesOrdersCreated?: Prisma.SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 
@@ -841,6 +1087,8 @@ export type UserCountOutputType = {
   refreshSessions: number
   purchaseOrdersCreated: number
   purchaseReceiptsReceived: number
+  salesOrdersCreated: number
+  salesFulfillmentsCreated: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -849,6 +1097,8 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   refreshSessions?: boolean | UserCountOutputTypeCountRefreshSessionsArgs
   purchaseOrdersCreated?: boolean | UserCountOutputTypeCountPurchaseOrdersCreatedArgs
   purchaseReceiptsReceived?: boolean | UserCountOutputTypeCountPurchaseReceiptsReceivedArgs
+  salesOrdersCreated?: boolean | UserCountOutputTypeCountSalesOrdersCreatedArgs
+  salesFulfillmentsCreated?: boolean | UserCountOutputTypeCountSalesFulfillmentsCreatedArgs
 }
 
 /**
@@ -896,6 +1146,20 @@ export type UserCountOutputTypeCountPurchaseReceiptsReceivedArgs<ExtArgs extends
   where?: Prisma.PurchaseReceiptWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSalesOrdersCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SalesOrderWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSalesFulfillmentsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SalesFulfillmentWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -910,6 +1174,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   refreshSessions?: boolean | Prisma.User$refreshSessionsArgs<ExtArgs>
   purchaseOrdersCreated?: boolean | Prisma.User$purchaseOrdersCreatedArgs<ExtArgs>
   purchaseReceiptsReceived?: boolean | Prisma.User$purchaseReceiptsReceivedArgs<ExtArgs>
+  salesOrdersCreated?: boolean | Prisma.User$salesOrdersCreatedArgs<ExtArgs>
+  salesFulfillmentsCreated?: boolean | Prisma.User$salesFulfillmentsCreatedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -950,6 +1216,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   refreshSessions?: boolean | Prisma.User$refreshSessionsArgs<ExtArgs>
   purchaseOrdersCreated?: boolean | Prisma.User$purchaseOrdersCreatedArgs<ExtArgs>
   purchaseReceiptsReceived?: boolean | Prisma.User$purchaseReceiptsReceivedArgs<ExtArgs>
+  salesOrdersCreated?: boolean | Prisma.User$salesOrdersCreatedArgs<ExtArgs>
+  salesFulfillmentsCreated?: boolean | Prisma.User$salesFulfillmentsCreatedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -963,6 +1231,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     refreshSessions: Prisma.$RefreshSessionPayload<ExtArgs>[]
     purchaseOrdersCreated: Prisma.$PurchaseOrderPayload<ExtArgs>[]
     purchaseReceiptsReceived: Prisma.$PurchaseReceiptPayload<ExtArgs>[]
+    salesOrdersCreated: Prisma.$SalesOrderPayload<ExtArgs>[]
+    salesFulfillmentsCreated: Prisma.$SalesFulfillmentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1371,6 +1641,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   refreshSessions<T extends Prisma.User$refreshSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$refreshSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RefreshSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   purchaseOrdersCreated<T extends Prisma.User$purchaseOrdersCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$purchaseOrdersCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PurchaseOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   purchaseReceiptsReceived<T extends Prisma.User$purchaseReceiptsReceivedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$purchaseReceiptsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PurchaseReceiptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  salesOrdersCreated<T extends Prisma.User$salesOrdersCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$salesOrdersCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SalesOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  salesFulfillmentsCreated<T extends Prisma.User$salesFulfillmentsCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$salesFulfillmentsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SalesFulfillmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1917,6 +2189,54 @@ export type User$purchaseReceiptsReceivedArgs<ExtArgs extends runtime.Types.Exte
   take?: number
   skip?: number
   distinct?: Prisma.PurchaseReceiptScalarFieldEnum | Prisma.PurchaseReceiptScalarFieldEnum[]
+}
+
+/**
+ * User.salesOrdersCreated
+ */
+export type User$salesOrdersCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SalesOrder
+   */
+  select?: Prisma.SalesOrderSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SalesOrder
+   */
+  omit?: Prisma.SalesOrderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SalesOrderInclude<ExtArgs> | null
+  where?: Prisma.SalesOrderWhereInput
+  orderBy?: Prisma.SalesOrderOrderByWithRelationInput | Prisma.SalesOrderOrderByWithRelationInput[]
+  cursor?: Prisma.SalesOrderWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SalesOrderScalarFieldEnum | Prisma.SalesOrderScalarFieldEnum[]
+}
+
+/**
+ * User.salesFulfillmentsCreated
+ */
+export type User$salesFulfillmentsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SalesFulfillment
+   */
+  select?: Prisma.SalesFulfillmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SalesFulfillment
+   */
+  omit?: Prisma.SalesFulfillmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SalesFulfillmentInclude<ExtArgs> | null
+  where?: Prisma.SalesFulfillmentWhereInput
+  orderBy?: Prisma.SalesFulfillmentOrderByWithRelationInput | Prisma.SalesFulfillmentOrderByWithRelationInput[]
+  cursor?: Prisma.SalesFulfillmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SalesFulfillmentScalarFieldEnum | Prisma.SalesFulfillmentScalarFieldEnum[]
 }
 
 /**

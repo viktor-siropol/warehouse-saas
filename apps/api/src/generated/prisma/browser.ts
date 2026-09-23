@@ -87,3 +87,28 @@ export type PurchaseReceipt = Prisma.PurchaseReceiptModel
  * 
  */
 export type PurchaseReceiptItem = Prisma.PurchaseReceiptItemModel
+/**
+ * Model Customer
+ * 
+ */
+export type Customer = Prisma.CustomerModel
+/**
+ * Model SalesOrder
+ * 
+ */
+export type SalesOrder = Prisma.SalesOrderModel
+/**
+ * Model SalesOrderItem
+ * 
+ */
+export type SalesOrderItem = Prisma.SalesOrderItemModel
+/**
+ * Model SalesFulfillment
+ * 
+ */
+export type SalesFulfillment = Prisma.SalesFulfillmentModel
+/**
+ * Model SalesFulfillmentItem
+ * 
+ */
+export type SalesFulfillmentItem = Prisma.SalesFulfillmentItemModel
