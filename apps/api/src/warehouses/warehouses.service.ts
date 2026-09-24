@@ -4,7 +4,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { Prisma } from '../generated/prisma/client.js';
+import {
+  Prisma,
+  PurchaseOrderStatus,
+  SalesOrderStatus,
+} from '../generated/prisma/client.js';
 
 import { PrismaService } from '../prisma/prisma.service.js';
 
@@ -36,6 +40,7 @@ export class WarehousesService {
         {
           isActive: 'desc',
         },
+
         {
           name: 'asc',
         },
@@ -103,23 +108,78 @@ export class WarehousesService {
     }
 
     if (dto.isActive === false && warehouse.isActive) {
-      const inventoryWithStock = await this.prisma.inventory.findFirst({
-        where: {
-          warehouseId,
+      const [inventoryWithStock, openPurchaseOrder, openSalesOrder] =
+        await Promise.all([
+          this.prisma.inventory.findFirst({
+            where: {
+              warehouseId,
 
-          quantity: {
-            gt: new Prisma.Decimal(0),
-          },
-        },
+              quantity: {
+                gt: new Prisma.Decimal(0),
+              },
+            },
 
-        select: {
-          productId: true,
-        },
-      });
+            select: {
+              productId: true,
+            },
+          }),
+
+          this.prisma.purchaseOrder.findFirst({
+            where: {
+              warehouseId,
+              organizationId,
+
+              status: {
+                in: [
+                  PurchaseOrderStatus.DRAFT,
+                  PurchaseOrderStatus.SUBMITTED,
+                  PurchaseOrderStatus.PARTIALLY_RECEIVED,
+                ],
+              },
+            },
+
+            select: {
+              id: true,
+            },
+          }),
+
+          this.prisma.salesOrder.findFirst({
+            where: {
+              warehouseId,
+              organizationId,
+
+              status: {
+                in: [
+                  SalesOrderStatus.DRAFT,
+                  SalesOrderStatus.CONFIRMED,
+                  SalesOrderStatus.PARTIALLY_RESERVED,
+                  SalesOrderStatus.RESERVED,
+                  SalesOrderStatus.PARTIALLY_FULFILLED,
+                ],
+              },
+            },
+
+            select: {
+              id: true,
+            },
+          }),
+        ]);
 
       if (inventoryWithStock) {
         throw new ConflictException(
           'Warehouse cannot be deactivated while it contains stock',
+        );
+      }
+
+      if (openPurchaseOrder) {
+        throw new ConflictException(
+          'Warehouse cannot be deactivated while it has open purchase orders',
+        );
+      }
+
+      if (openSalesOrder) {
+        throw new ConflictException(
+          'Warehouse cannot be deactivated while it has open sales orders',
         );
       }
     }

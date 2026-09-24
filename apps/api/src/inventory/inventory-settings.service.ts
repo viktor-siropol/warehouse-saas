@@ -8,6 +8,25 @@ import { LowStockQueryDto } from './dto/low-stock-query.dto.js';
 
 import { SetReorderPointDto } from './dto/set-reorder-point.dto.js';
 
+type LowStockRow = {
+  quantity: Prisma.Decimal;
+  reservedQuantity: Prisma.Decimal;
+  availableQuantity: Prisma.Decimal;
+  reorderPoint: Prisma.Decimal;
+  updatedAt: Date;
+
+  productId: string;
+  productSku: string;
+  productName: string;
+
+  categoryId: string;
+  categoryName: string;
+
+  warehouseId: string;
+  warehouseCode: string;
+  warehouseName: string;
+};
+
 @Injectable()
 export class InventorySettingsService {
   constructor(private readonly prisma: PrismaService) {}
@@ -65,7 +84,9 @@ export class InventorySettingsService {
       create: {
         warehouseId,
         productId,
+
         quantity: new Prisma.Decimal(0),
+
         reorderPoint,
       },
 
@@ -75,6 +96,7 @@ export class InventorySettingsService {
 
       select: {
         quantity: true,
+        reservedQuantity: true,
         reorderPoint: true,
         updatedAt: true,
 
@@ -97,72 +119,156 @@ export class InventorySettingsService {
     });
   }
 
-  findLowStock(organizationId: string, query: LowStockQueryDto) {
-    return this.prisma.inventory.findMany({
-      where: {
-        reorderPoint: {
-          gt: new Prisma.Decimal(0),
-        },
+  async findLowStock(organizationId: string, query: LowStockQueryDto) {
+    const limit = query.limit ?? 100;
 
-        quantity: {
-          lte: this.prisma.inventory.fields.reorderPoint,
-        },
+    const rows = query.warehouseId
+      ? await this.prisma.$queryRaw<LowStockRow[]>`
+            SELECT
+              i."quantity",
+              i."reservedQuantity",
+              (
+                i."quantity" -
+                i."reservedQuantity"
+              ) AS "availableQuantity",
+              i."reorderPoint",
+              i."updatedAt",
 
-        product: {
-          is: {
-            organizationId,
-            isActive: true,
-          },
-        },
+              p."id" AS "productId",
+              p."sku" AS "productSku",
+              p."name" AS "productName",
 
-        warehouse: {
-          is: {
-            organizationId,
-            isActive: true,
+              c."id" AS "categoryId",
+              c."name" AS "categoryName",
 
-            ...(query.warehouseId
-              ? {
-                  id: query.warehouseId,
-                }
-              : {}),
-          },
+              w."id" AS "warehouseId",
+              w."code" AS "warehouseCode",
+              w."name" AS "warehouseName"
+
+            FROM "Inventory" i
+
+            INNER JOIN "Product" p
+              ON p."id" = i."productId"
+
+            INNER JOIN "Category" c
+              ON c."id" = p."categoryId"
+
+            INNER JOIN "Warehouse" w
+              ON w."id" = i."warehouseId"
+
+            WHERE
+              p."organizationId" =
+                CAST(${organizationId} AS uuid)
+
+              AND w."organizationId" =
+                CAST(${organizationId} AS uuid)
+
+              AND w."id" =
+                CAST(${query.warehouseId} AS uuid)
+
+              AND p."isActive" = true
+              AND w."isActive" = true
+
+              AND i."reorderPoint" > 0
+
+              AND (
+                i."quantity" -
+                i."reservedQuantity"
+              ) <= i."reorderPoint"
+
+            ORDER BY
+              i."updatedAt" ASC
+
+            LIMIT ${limit}
+          `
+      : await this.prisma.$queryRaw<LowStockRow[]>`
+            SELECT
+              i."quantity",
+              i."reservedQuantity",
+              (
+                i."quantity" -
+                i."reservedQuantity"
+              ) AS "availableQuantity",
+              i."reorderPoint",
+              i."updatedAt",
+
+              p."id" AS "productId",
+              p."sku" AS "productSku",
+              p."name" AS "productName",
+
+              c."id" AS "categoryId",
+              c."name" AS "categoryName",
+
+              w."id" AS "warehouseId",
+              w."code" AS "warehouseCode",
+              w."name" AS "warehouseName"
+
+            FROM "Inventory" i
+
+            INNER JOIN "Product" p
+              ON p."id" = i."productId"
+
+            INNER JOIN "Category" c
+              ON c."id" = p."categoryId"
+
+            INNER JOIN "Warehouse" w
+              ON w."id" = i."warehouseId"
+
+            WHERE
+              p."organizationId" =
+                CAST(${organizationId} AS uuid)
+
+              AND w."organizationId" =
+                CAST(${organizationId} AS uuid)
+
+              AND p."isActive" = true
+              AND w."isActive" = true
+
+              AND i."reorderPoint" > 0
+
+              AND (
+                i."quantity" -
+                i."reservedQuantity"
+              ) <= i."reorderPoint"
+
+            ORDER BY
+              i."updatedAt" ASC
+
+            LIMIT ${limit}
+          `;
+
+    return rows.map((row) => ({
+      quantity: row.quantity,
+
+      reservedQuantity: row.reservedQuantity,
+
+      availableQuantity: row.availableQuantity,
+
+      reorderPoint: row.reorderPoint,
+
+      updatedAt: row.updatedAt,
+
+      product: {
+        id: row.productId,
+
+        sku: row.productSku,
+
+        name: row.productName,
+
+        category: {
+          id: row.categoryId,
+
+          name: row.categoryName,
         },
       },
 
-      select: {
-        quantity: true,
-        reorderPoint: true,
-        updatedAt: true,
+      warehouse: {
+        id: row.warehouseId,
 
-        product: {
-          select: {
-            id: true,
-            sku: true,
-            name: true,
+        code: row.warehouseCode,
 
-            category: {
-              select: {
-                id: true,
-                name: true,
-              },
-            },
-          },
-        },
-
-        warehouse: {
-          select: {
-            id: true,
-            code: true,
-            name: true,
-          },
-        },
+        name: row.warehouseName,
       },
-
-      orderBy: {
-        updatedAt: 'asc',
-      },
-
-      take: query.limit ?? 100,
-    });
+    }));
   }
 }
