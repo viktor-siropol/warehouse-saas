@@ -15,6 +15,8 @@ import {
   Warehouse,
   ClipboardList,
   Truck,
+  ShoppingCart,
+  Users,
 } from "lucide-react";
 
 import { logoutAction } from "@/features/auth/actions";
@@ -216,6 +218,46 @@ export function AppSidebar({ user, organizationId }: AppSidebarProps) {
                   >
                     <ClipboardList />
                     <span>Purchase orders</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Sales</SidebarGroupLabel>
+
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={pathname.startsWith(
+                    `/organizations/${organizationId}/customers`,
+                  )}
+                  tooltip="Customers"
+                >
+                  <Link href={`/organizations/${organizationId}/customers`}>
+                    <Users />
+
+                    <span>Customers</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={pathname.startsWith(
+                    `/organizations/${organizationId}/sales-orders`,
+                  )}
+                  tooltip="Sales orders"
+                >
+                  <Link href={`/organizations/${organizationId}/sales-orders`}>
+                    <ShoppingCart />
+
+                    <span>Sales orders</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>

@@ -32,7 +32,7 @@ export default async function LowStockPage({ params }: LowStockPageProps) {
     <>
       <PageHeader
         title="Low stock"
-        description="Products that reached or dropped below their configured reorder point."
+        description="Products whose available stock reached or dropped below their reorder point."
       />
 
       {items.length === 0 ? (
@@ -56,9 +56,13 @@ export default async function LowStockPage({ params }: LowStockPageProps) {
 
                 <TableHead>Product</TableHead>
 
-                <TableHead className="text-right">Quantity</TableHead>
+                <TableHead className="text-right">On hand</TableHead>
 
-                <TableHead className="text-right">Reorder point</TableHead>
+                <TableHead className="text-right">Reserved</TableHead>
+
+                <TableHead className="text-right">Available</TableHead>
+
+                <TableHead className="text-right">Reorder</TableHead>
 
                 <TableHead>Status</TableHead>
               </TableRow>
@@ -84,6 +88,14 @@ export default async function LowStockPage({ params }: LowStockPageProps) {
 
                   <TableCell className="text-right font-mono">
                     {item.quantity}
+                  </TableCell>
+
+                  <TableCell className="text-right font-mono">
+                    {item.reservedQuantity}
+                  </TableCell>
+
+                  <TableCell className="text-right font-mono">
+                    {item.availableQuantity}
                   </TableCell>
 
                   <TableCell className="text-right font-mono">

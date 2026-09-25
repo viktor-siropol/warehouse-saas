@@ -76,7 +76,7 @@ export default async function InventoryPage({ params }: InventoryPageProps) {
           <h2 className="text-base font-semibold">Inventory</h2>
 
           <p className="text-sm text-muted-foreground">
-            Current product quantities and reorder thresholds.
+            On-hand, reserved and available quantities for this warehouse.
           </p>
         </div>
 
@@ -90,7 +90,11 @@ export default async function InventoryPage({ params }: InventoryPageProps) {
 
                 <TableHead>Category</TableHead>
 
-                <TableHead className="text-right">Quantity</TableHead>
+                <TableHead className="text-right">On hand</TableHead>
+
+                <TableHead className="text-right">Reserved</TableHead>
+
+                <TableHead className="text-right">Available</TableHead>
 
                 <TableHead className="w-56">Reorder point</TableHead>
               </TableRow>
@@ -100,7 +104,7 @@ export default async function InventoryPage({ params }: InventoryPageProps) {
               {inventory.items.map((item) => {
                 const lowStock =
                   Number(item.reorderPoint) > 0 &&
-                  Number(item.quantity) <= Number(item.reorderPoint);
+                  Number(item.availableQuantity) <= Number(item.reorderPoint);
 
                 return (
                   <TableRow key={item.product.id}>
@@ -115,8 +119,16 @@ export default async function InventoryPage({ params }: InventoryPageProps) {
                     <TableCell>{item.product.category.name}</TableCell>
 
                     <TableCell className="text-right font-mono">
+                      {item.quantity}
+                    </TableCell>
+
+                    <TableCell className="text-right font-mono">
+                      {item.reservedQuantity}
+                    </TableCell>
+
+                    <TableCell className="text-right font-mono">
                       <div className="flex items-center justify-end gap-2">
-                        {item.quantity}
+                        {item.availableQuantity}
 
                         {lowStock && (
                           <Badge

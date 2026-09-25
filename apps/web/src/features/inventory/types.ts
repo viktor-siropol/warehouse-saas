@@ -11,8 +11,15 @@ export type InventoryProduct = {
 
 export type InventoryItem = {
   product: InventoryProduct;
+
   quantity: string;
+
+  reservedQuantity: string;
+
+  availableQuantity: string;
+
   reorderPoint: string;
+
   updatedAt: string | null;
 };
 
@@ -29,7 +36,13 @@ export type WarehouseInventory = {
 
 export type LowStockItem = {
   quantity: string;
+
+  reservedQuantity: string;
+
+  availableQuantity: string;
+
   reorderPoint: string;
+
   updatedAt: string;
 
   product: InventoryProduct;
