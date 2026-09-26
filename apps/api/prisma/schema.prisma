@@ -55,6 +55,7 @@ model Organization {
   purchaseOrders PurchaseOrder[]
   customers      Customer[]
   salesOrders    SalesOrder[]
+  auditLogs      AuditLog[]
 }
 
 model User {
@@ -69,6 +70,7 @@ model User {
   memberships              Membership[]
   stockMovements           StockMovement[]
   refreshSessions          RefreshSession[]
+  auditLogs                AuditLog[]
   purchaseOrdersCreated    PurchaseOrder[]    @relation("PurchaseOrderCreatedBy")
   purchaseReceiptsReceived PurchaseReceipt[]  @relation("PurchaseReceiptReceivedBy")
   salesOrdersCreated       SalesOrder[]       @relation("SalesOrderCreatedBy")
@@ -414,4 +416,23 @@ model SalesFulfillmentItem {
 
   @@unique([fulfillmentId, salesOrderItemId])
   @@index([salesOrderItemId])
+}
+
+model AuditLog {
+  id             String   @id @default(uuid()) @db.Uuid
+  organizationId String   @db.Uuid
+  actorUserId    String?  @db.Uuid
+  action         String   @db.VarChar(100)
+  entityType     String   @db.VarChar(100)
+  entityId       String?  @db.Uuid
+  metadata       Json?
+  createdAt      DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  actorUser    User?        @relation(fields: [actorUserId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId, createdAt])
+  @@index([organizationId, action, createdAt])
+  @@index([organizationId, entityType, entityId, createdAt])
+  @@index([actorUserId, createdAt])
 }

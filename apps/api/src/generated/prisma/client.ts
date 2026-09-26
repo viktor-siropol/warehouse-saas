@@ -136,3 +136,8 @@ export type SalesFulfillment = Prisma.SalesFulfillmentModel
  * 
  */
 export type SalesFulfillmentItem = Prisma.SalesFulfillmentItemModel
+/**
+ * Model AuditLog
+ * 
+ */
+export type AuditLog = Prisma.AuditLogModel
