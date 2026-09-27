@@ -6,6 +6,8 @@ import { AppController } from './app.controller.js';
 
 import { AppService } from './app.service.js';
 
+import { AuditModule } from './audit/audit.module.js';
+
 import { AuthModule } from './auth/auth.module.js';
 
 import { CategoriesModule } from './categories/categories.module.js';
@@ -19,6 +21,8 @@ import { PrismaModule } from './prisma/prisma.module.js';
 import { ProductsModule } from './products/products.module.js';
 
 import { PurchaseOrdersModule } from './purchase-orders/purchase-orders.module.js';
+
+import { ReportsModule } from './reports/reports.module.js';
 
 import { SalesOrdersModule } from './sales-orders/sales-orders.module.js';
 
@@ -35,16 +39,30 @@ import { WarehousesModule } from './warehouses/warehouses.module.js';
     }),
 
     PrismaModule,
+
     AuthModule,
+
     ProductsModule,
+
     CategoriesModule,
+
     WarehousesModule,
+
     InventoryModule,
+
     StockMovementsModule,
+
     SuppliersModule,
+
     PurchaseOrdersModule,
+
     CustomersModule,
+
     SalesOrdersModule,
+
+    AuditModule,
+
+    ReportsModule,
   ],
 
   controllers: [AppController],

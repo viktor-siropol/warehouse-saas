@@ -115,8 +115,15 @@ export class SalesOrdersController {
 
     @Param('salesOrderId', ParseUUIDPipe)
     salesOrderId: string,
+
+    @CurrentUser()
+    user: AuthenticatedUser,
   ) {
-    return this.salesOrdersService.confirm(organizationId, salesOrderId);
+    return this.salesOrdersService.confirm(
+      organizationId,
+      salesOrderId,
+      user.id,
+    );
   }
 
   @Post(':salesOrderId/reservations')
@@ -133,10 +140,18 @@ export class SalesOrdersController {
     @Param('salesOrderId', ParseUUIDPipe)
     salesOrderId: string,
 
+    @CurrentUser()
+    user: AuthenticatedUser,
+
     @Body()
     dto: ReserveSalesOrderDto,
   ) {
-    return this.salesOrdersService.reserve(organizationId, salesOrderId, dto);
+    return this.salesOrdersService.reserve(
+      organizationId,
+      salesOrderId,
+      user.id,
+      dto,
+    );
   }
 
   @Post(':salesOrderId/fulfillments')
@@ -175,7 +190,14 @@ export class SalesOrdersController {
 
     @Param('salesOrderId', ParseUUIDPipe)
     salesOrderId: string,
+
+    @CurrentUser()
+    user: AuthenticatedUser,
   ) {
-    return this.salesOrdersService.cancel(organizationId, salesOrderId);
+    return this.salesOrdersService.cancel(
+      organizationId,
+      salesOrderId,
+      user.id,
+    );
   }
 }

@@ -8,6 +8,12 @@ import {
 import { randomUUID } from 'node:crypto';
 
 import {
+  AUDIT_ACTION,
+  AUDIT_ENTITY_TYPE,
+  createAuditLogData,
+} from '../audit/audit-log.js';
+
+import {
   Prisma,
   PurchaseOrderStatus,
   StockMovementType,
@@ -238,6 +244,7 @@ export class PurchaseOrdersService {
         return await this.prisma.purchaseOrder.create({
           data: {
             organizationId,
+
             supplierId: dto.supplierId,
 
             warehouseId: dto.warehouseId,
@@ -330,6 +337,7 @@ export class PurchaseOrdersService {
       return await this.prisma.purchaseOrderItem.create({
         data: {
           purchaseOrderId,
+
           productId: dto.productId,
 
           orderedQuantity,
@@ -408,7 +416,11 @@ export class PurchaseOrdersService {
     }
   }
 
-  async submit(organizationId: string, purchaseOrderId: string) {
+  async submit(
+    organizationId: string,
+    purchaseOrderId: string,
+    userId: string,
+  ) {
     return this.runSerializableTransaction(() =>
       this.prisma.$transaction(
         async (tx) => {
@@ -469,7 +481,7 @@ export class PurchaseOrdersService {
             throw new ConflictException('Warehouse is inactive');
           }
 
-          return tx.purchaseOrder.update({
+          const updatedPurchaseOrder = await tx.purchaseOrder.update({
             where: {
               id: purchaseOrderId,
             },
@@ -480,6 +492,22 @@ export class PurchaseOrdersService {
               submittedAt: new Date(),
             },
           });
+
+          await tx.auditLog.create({
+            data: createAuditLogData({
+              organizationId,
+
+              actorUserId: userId,
+
+              action: AUDIT_ACTION.PURCHASE_ORDER_SUBMITTED,
+
+              entityType: AUDIT_ENTITY_TYPE.PURCHASE_ORDER,
+
+              entityId: purchaseOrderId,
+            }),
+          });
+
+          return updatedPurchaseOrder;
         },
         {
           isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
@@ -492,46 +520,79 @@ export class PurchaseOrdersService {
     );
   }
 
-  async cancel(organizationId: string, purchaseOrderId: string) {
-    const purchaseOrder = await this.prisma.purchaseOrder.findFirst({
-      where: {
-        id: purchaseOrderId,
+  async cancel(
+    organizationId: string,
+    purchaseOrderId: string,
+    userId: string,
+  ) {
+    return this.runSerializableTransaction(() =>
+      this.prisma.$transaction(
+        async (tx) => {
+          const purchaseOrder = await tx.purchaseOrder.findFirst({
+            where: {
+              id: purchaseOrderId,
 
-        organizationId,
-      },
+              organizationId,
+            },
 
-      select: {
-        id: true,
-        status: true,
-      },
-    });
+            select: {
+              id: true,
+              status: true,
+            },
+          });
 
-    if (!purchaseOrder) {
-      throw new NotFoundException(
-        'Purchase order not found in this organization',
-      );
-    }
+          if (!purchaseOrder) {
+            throw new NotFoundException(
+              'Purchase order not found in this organization',
+            );
+          }
 
-    if (
-      purchaseOrder.status !== PurchaseOrderStatus.DRAFT &&
-      purchaseOrder.status !== PurchaseOrderStatus.SUBMITTED
-    ) {
-      throw new ConflictException(
-        'Only DRAFT or unreceived SUBMITTED purchase orders can be cancelled',
-      );
-    }
+          if (
+            purchaseOrder.status !== PurchaseOrderStatus.DRAFT &&
+            purchaseOrder.status !== PurchaseOrderStatus.SUBMITTED
+          ) {
+            throw new ConflictException(
+              'Only DRAFT or unreceived SUBMITTED purchase orders can be cancelled',
+            );
+          }
 
-    return this.prisma.purchaseOrder.update({
-      where: {
-        id: purchaseOrderId,
-      },
+          const updatedPurchaseOrder = await tx.purchaseOrder.update({
+            where: {
+              id: purchaseOrderId,
+            },
 
-      data: {
-        status: PurchaseOrderStatus.CANCELLED,
+            data: {
+              status: PurchaseOrderStatus.CANCELLED,
 
-        cancelledAt: new Date(),
-      },
-    });
+              cancelledAt: new Date(),
+            },
+          });
+
+          await tx.auditLog.create({
+            data: createAuditLogData({
+              organizationId,
+
+              actorUserId: userId,
+
+              action: AUDIT_ACTION.PURCHASE_ORDER_CANCELLED,
+
+              entityType: AUDIT_ENTITY_TYPE.PURCHASE_ORDER,
+
+              entityId: purchaseOrderId,
+            }),
+          });
+
+          return updatedPurchaseOrder;
+        },
+        {
+          isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
+
+          maxWait: 5_000,
+
+          timeout: 10_000,
+        },
+      ),
+    );
   }
 
   async receive(
@@ -756,6 +817,34 @@ export class PurchaseOrdersService {
 
               receivedAt: fullyReceived ? new Date() : null,
             },
+          });
+
+          await tx.auditLog.create({
+            data: createAuditLogData({
+              organizationId,
+
+              actorUserId: userId,
+
+              action: AUDIT_ACTION.PURCHASE_ORDER_RECEIVED,
+
+              entityType: AUDIT_ENTITY_TYPE.PURCHASE_ORDER,
+
+              entityId: purchaseOrder.id,
+
+              metadata: {
+                receiptId: receipt.id,
+
+                status: nextStatus,
+
+                note: note ?? null,
+
+                items: parsedItems.map((item) => ({
+                  purchaseOrderItemId: item.purchaseOrderItemId,
+
+                  quantity: item.quantity.toString(),
+                })),
+              },
+            }),
           });
 
           return {

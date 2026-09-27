@@ -117,8 +117,15 @@ export class PurchaseOrdersController {
 
     @Param('purchaseOrderId', ParseUUIDPipe)
     purchaseOrderId: string,
+
+    @CurrentUser()
+    user: AuthenticatedUser,
   ) {
-    return this.purchaseOrdersService.submit(organizationId, purchaseOrderId);
+    return this.purchaseOrdersService.submit(
+      organizationId,
+      purchaseOrderId,
+      user.id,
+    );
   }
 
   @Post(':purchaseOrderId/cancel')
@@ -129,8 +136,15 @@ export class PurchaseOrdersController {
 
     @Param('purchaseOrderId', ParseUUIDPipe)
     purchaseOrderId: string,
+
+    @CurrentUser()
+    user: AuthenticatedUser,
   ) {
-    return this.purchaseOrdersService.cancel(organizationId, purchaseOrderId);
+    return this.purchaseOrdersService.cancel(
+      organizationId,
+      purchaseOrderId,
+      user.id,
+    );
   }
 
   @Post(':purchaseOrderId/receipts')
