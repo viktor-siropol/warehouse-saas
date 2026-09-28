@@ -6,22 +6,20 @@ import { usePathname } from "next/navigation";
 
 import {
   ArrowLeftRight,
+  BarChart3,
   Boxes,
   ChevronsUpDown,
+  ClipboardList,
   LayoutDashboard,
   LogOut,
   Package,
-  TriangleAlert,
-  Warehouse,
-  ClipboardList,
-  Truck,
+  ScrollText,
   ShoppingCart,
+  TriangleAlert,
+  Truck,
   Users,
+  Warehouse,
 } from "lucide-react";
-
-import { logoutAction } from "@/features/auth/actions";
-
-import type { AuthUser } from "@/features/auth/types";
 
 import {
   DropdownMenu,
@@ -46,8 +44,13 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 
+import { logoutAction } from "@/features/auth/actions";
+
+import type { AuthUser } from "@/features/auth/types";
+
 type AppSidebarProps = {
   user: AuthUser;
+
   organizationId: string;
 };
 
@@ -62,32 +65,123 @@ export function AppSidebar({ user, organizationId }: AppSidebarProps) {
     return null;
   }
 
-  const navigation = [
+  const groups = [
     {
-      label: "Overview",
-      href: `/organizations/${organizationId}`,
-      icon: LayoutDashboard,
-      exact: true,
+      label: "Operations",
+
+      items: [
+        {
+          label: "Overview",
+
+          href: `/organizations/${organizationId}`,
+
+          icon: LayoutDashboard,
+
+          exact: true,
+        },
+
+        {
+          label: "Products",
+
+          href: `/organizations/${organizationId}/products`,
+
+          icon: Package,
+        },
+
+        {
+          label: "Warehouses",
+
+          href: `/organizations/${organizationId}/warehouses`,
+
+          icon: Warehouse,
+        },
+
+        {
+          label: "Low stock",
+
+          href: `/organizations/${organizationId}/inventory/low-stock`,
+
+          icon: TriangleAlert,
+        },
+
+        {
+          label: "Movements",
+
+          href: `/organizations/${organizationId}/stock-movements`,
+
+          icon: ArrowLeftRight,
+        },
+      ],
     },
+
     {
-      label: "Products",
-      href: `/organizations/${organizationId}/products`,
-      icon: Package,
+      label: "Procurement",
+
+      items: [
+        {
+          label: "Suppliers",
+
+          href: `/organizations/${organizationId}/suppliers`,
+
+          icon: Truck,
+        },
+
+        {
+          label: "Purchase orders",
+
+          href: `/organizations/${organizationId}/purchase-orders`,
+
+          icon: ClipboardList,
+        },
+      ],
     },
+
     {
-      label: "Warehouses",
-      href: `/organizations/${organizationId}/warehouses`,
-      icon: Warehouse,
+      label: "Sales",
+
+      items: [
+        {
+          label: "Customers",
+
+          href: `/organizations/${organizationId}/customers`,
+
+          icon: Users,
+        },
+
+        {
+          label: "Sales orders",
+
+          href: `/organizations/${organizationId}/sales-orders`,
+
+          icon: ShoppingCart,
+        },
+      ],
     },
+
     {
-      label: "Low stock",
-      href: `/organizations/${organizationId}/inventory/low-stock`,
-      icon: TriangleAlert,
-    },
-    {
-      label: "Movements",
-      href: `/organizations/${organizationId}/stock-movements`,
-      icon: ArrowLeftRight,
+      label: "Analytics",
+
+      items: [
+        {
+          label: "Reports",
+
+          href: `/organizations/${organizationId}/reports`,
+
+          icon: BarChart3,
+        },
+
+        ...(membership.role !== "WORKER"
+          ? [
+              {
+                label: "Audit log",
+
+                href: `/organizations/${organizationId}/audit`,
+
+                icon: ScrollText,
+              },
+            ]
+          : []),
+      ],
     },
   ];
 
@@ -154,116 +248,40 @@ export function AppSidebar({ user, organizationId }: AppSidebarProps) {
       </SidebarHeader>
 
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Operations</SidebarGroupLabel>
+        {groups.map((group) => (
+          <SidebarGroup key={group.label}>
+            <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
 
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {navigation.map((item) => {
-                const active = item.exact
-                  ? pathname === item.href
-                  : pathname.startsWith(item.href);
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {group.items.map((item) => {
+                  const active =
+                    "exact" in item && item.exact
+                      ? pathname === item.href
+                      : pathname.startsWith(item.href);
 
-                const Icon = item.icon;
+                  const Icon = item.icon;
 
-                return (
-                  <SidebarMenuItem key={item.href}>
-                    <SidebarMenuButton
-                      asChild
-                      isActive={active}
-                      tooltip={item.label}
-                    >
-                      <Link href={item.href}>
-                        <Icon />
-                        <span>{item.label}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+                  return (
+                    <SidebarMenuItem key={item.href}>
+                      <SidebarMenuButton
+                        asChild
+                        isActive={active}
+                        tooltip={item.label}
+                      >
+                        <Link href={item.href}>
+                          <Icon />
 
-        <SidebarGroup>
-          <SidebarGroupLabel>Procurement</SidebarGroupLabel>
-
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  asChild
-                  isActive={pathname.startsWith(
-                    `/organizations/${organizationId}/suppliers`,
-                  )}
-                  tooltip="Suppliers"
-                >
-                  <Link href={`/organizations/${organizationId}/suppliers`}>
-                    <Truck />
-                    <span>Suppliers</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  asChild
-                  isActive={pathname.startsWith(
-                    `/organizations/${organizationId}/purchase-orders`,
-                  )}
-                  tooltip="Purchase orders"
-                >
-                  <Link
-                    href={`/organizations/${organizationId}/purchase-orders`}
-                  >
-                    <ClipboardList />
-                    <span>Purchase orders</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        <SidebarGroup>
-          <SidebarGroupLabel>Sales</SidebarGroupLabel>
-
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  asChild
-                  isActive={pathname.startsWith(
-                    `/organizations/${organizationId}/customers`,
-                  )}
-                  tooltip="Customers"
-                >
-                  <Link href={`/organizations/${organizationId}/customers`}>
-                    <Users />
-
-                    <span>Customers</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  asChild
-                  isActive={pathname.startsWith(
-                    `/organizations/${organizationId}/sales-orders`,
-                  )}
-                  tooltip="Sales orders"
-                >
-                  <Link href={`/organizations/${organizationId}/sales-orders`}>
-                    <ShoppingCart />
-
-                    <span>Sales orders</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+                          <span>{item.label}</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ))}
       </SidebarContent>
 
       <SidebarFooter>

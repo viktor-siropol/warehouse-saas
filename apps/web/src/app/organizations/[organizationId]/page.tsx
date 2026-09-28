@@ -1,13 +1,18 @@
 import Link from "next/link";
 
 import {
-  ArrowLeftRight,
+  ArrowDownToLine,
+  ArrowUpFromLine,
+  Boxes,
+  ClipboardList,
   Package,
   TriangleAlert,
   Warehouse,
 } from "lucide-react";
 
 import { PageHeader } from "@/components/layout/page-header";
+
+import { Badge } from "@/components/ui/badge";
 
 import {
   Card,
@@ -17,63 +22,88 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import { getLowStock } from "@/features/inventory/api/get-low-stock";
+import { getDashboard } from "@/features/analytics/api/get-dashboard";
 
-import { getStockMovements } from "@/features/inventory/api/get-stock-movements";
-
-import { getProducts } from "@/features/products/api/get-products";
-
-import { getWarehouses } from "@/features/warehouses/api/get-warehouses";
-
-type OrganizationPageProps = {
+type Props = {
   params: Promise<{
     organizationId: string;
   }>;
 };
 
-export default async function OrganizationPage({
-  params,
-}: OrganizationPageProps) {
+export default async function OrganizationPage({ params }: Props) {
   const { organizationId } = await params;
 
-  const [products, warehouses, lowStock, movements] = await Promise.all([
-    getProducts(organizationId),
-
-    getWarehouses(organizationId),
-
-    getLowStock(organizationId),
-
-    getStockMovements(organizationId),
-  ]);
-
-  const activeWarehouses = warehouses.filter(
-    (warehouse) => warehouse.isActive,
-  ).length;
+  const dashboard = await getDashboard(organizationId);
 
   const metrics = [
     {
-      label: "Products",
-      value: products.length,
+      label: "Active products",
+
+      value: dashboard.catalog.activeProducts,
+
       icon: Package,
+
       href: `/organizations/${organizationId}/products`,
     },
+
     {
-      label: "Active warehouses",
-      value: activeWarehouses,
+      label: "Warehouses",
+
+      value: dashboard.catalog.activeWarehouses,
+
       icon: Warehouse,
+
       href: `/organizations/${organizationId}/warehouses`,
     },
+
+    {
+      label: "Available stock",
+
+      value: dashboard.inventory.available,
+
+      icon: Boxes,
+
+      href: `/organizations/${organizationId}/warehouses`,
+    },
+
+    {
+      label: "Reserved",
+
+      value: dashboard.inventory.reserved,
+
+      icon: ClipboardList,
+
+      href: `/organizations/${organizationId}/sales-orders`,
+    },
+
     {
       label: "Low stock",
-      value: lowStock.length,
+
+      value: dashboard.inventory.lowStockPositions,
+
       icon: TriangleAlert,
+
       href: `/organizations/${organizationId}/inventory/low-stock`,
     },
+
     {
-      label: "Recent movements",
-      value: movements.length,
-      icon: ArrowLeftRight,
-      href: `/organizations/${organizationId}/stock-movements`,
+      label: "Open purchase orders",
+
+      value: dashboard.orders.openPurchaseOrders,
+
+      icon: ArrowDownToLine,
+
+      href: `/organizations/${organizationId}/purchase-orders`,
+    },
+
+    {
+      label: "Open sales orders",
+
+      value: dashboard.orders.openSalesOrders,
+
+      icon: ArrowUpFromLine,
+
+      href: `/organizations/${organizationId}/sales-orders`,
     },
   ];
 
@@ -81,7 +111,7 @@ export default async function OrganizationPage({
     <>
       <PageHeader
         title="Overview"
-        description="Monitor your warehouse operations and current inventory state."
+        description="Operational snapshot of inventory, procurement and sales."
       />
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -100,9 +130,9 @@ export default async function OrganizationPage({
                 </CardHeader>
 
                 <CardContent>
-                  <div className="text-3xl font-semibold tracking-tight">
+                  <p className="text-2xl font-semibold tracking-tight">
                     {metric.value}
-                  </div>
+                  </p>
                 </CardContent>
               </Card>
             </Link>
@@ -113,70 +143,21 @@ export default async function OrganizationPage({
       <div className="grid gap-4 xl:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Low stock</CardTitle>
+            <CardTitle className="text-base">Recent stock movements</CardTitle>
 
             <CardDescription>
-              Inventory items at or below their reorder point.
+              Latest physical changes to warehouse inventory.
             </CardDescription>
           </CardHeader>
 
           <CardContent>
-            {lowStock.length === 0 ? (
-              <p className="text-sm text-muted-foreground">
-                All configured inventory levels are healthy.
-              </p>
-            ) : (
-              <div className="space-y-3">
-                {lowStock.slice(0, 5).map((item) => (
-                  <div
-                    key={`${item.warehouse.id}:${item.product.id}`}
-                    className="flex items-center justify-between gap-4 border-b pb-3 last:border-0 last:pb-0"
-                  >
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-medium">
-                        {item.product.name}
-                      </p>
-
-                      <p className="truncate text-xs text-muted-foreground">
-                        {item.warehouse.code}
-                        {" · "}
-                        {item.product.sku}
-                      </p>
-                    </div>
-
-                    <div className="text-right">
-                      <p className="text-sm font-medium text-warning">
-                        {item.quantity}
-                      </p>
-
-                      <p className="text-xs text-muted-foreground">
-                        reorder {item.reorderPoint}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent activity</CardTitle>
-
-            <CardDescription>
-              Latest inventory movements across your organization.
-            </CardDescription>
-          </CardHeader>
-
-          <CardContent>
-            {movements.length === 0 ? (
+            {dashboard.recentMovements.length === 0 ? (
               <p className="text-sm text-muted-foreground">
                 No stock movements yet.
               </p>
             ) : (
               <div className="space-y-3">
-                {movements.slice(0, 5).map((movement) => (
+                {dashboard.recentMovements.map((movement) => (
                   <div
                     key={movement.id}
                     className="flex items-center justify-between gap-4 border-b pb-3 last:border-0 last:pb-0"
@@ -186,15 +167,48 @@ export default async function OrganizationPage({
                         {movement.product.name}
                       </p>
 
-                      <p className="text-xs text-muted-foreground">
-                        {movement.type}
-                        {" · "}
+                      <p className="font-mono text-xs text-muted-foreground">
                         {movement.warehouse.code}
+                        {" · "}
+                        {movement.type}
                       </p>
                     </div>
 
-                    <p className="font-mono text-sm font-medium">
-                      {movement.delta}
+                    <Badge variant="outline">{movement.delta}</Badge>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Recent audit activity</CardTitle>
+
+            <CardDescription>
+              Important operational actions recorded by the system.
+            </CardDescription>
+          </CardHeader>
+
+          <CardContent>
+            {dashboard.recentAudit.length === 0 ? (
+              <p className="text-sm text-muted-foreground">
+                No audit events recorded yet.
+              </p>
+            ) : (
+              <div className="space-y-3">
+                {dashboard.recentAudit.map((entry) => (
+                  <div
+                    key={entry.id}
+                    className="border-b pb-3 last:border-0 last:pb-0"
+                  >
+                    <p className="text-sm font-medium">{entry.action}</p>
+
+                    <p className="mt-0.5 text-xs text-muted-foreground">
+                      {entry.actorUser?.email ?? "System"}
+                      {" · "}
+                      {entry.entityType}
                     </p>
                   </div>
                 ))}
