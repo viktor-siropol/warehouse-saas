@@ -141,3 +141,13 @@ export type SalesFulfillmentItem = Prisma.SalesFulfillmentItemModel
  * 
  */
 export type AuditLog = Prisma.AuditLogModel
+/**
+ * Model OutboxEvent
+ * 
+ */
+export type OutboxEvent = Prisma.OutboxEventModel
+/**
+ * Model Notification
+ * 
+ */
+export type Notification = Prisma.NotificationModel
