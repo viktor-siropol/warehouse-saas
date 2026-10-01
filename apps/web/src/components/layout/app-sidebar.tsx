@@ -7,10 +7,12 @@ import { usePathname } from "next/navigation";
 import {
   ArrowLeftRight,
   BarChart3,
+  Bell,
   Boxes,
   ChevronsUpDown,
   ClipboardList,
   LayoutDashboard,
+  ListTodo,
   LogOut,
   Package,
   ScrollText,
@@ -111,6 +113,14 @@ export function AppSidebar({ user, organizationId }: AppSidebarProps) {
 
           icon: ArrowLeftRight,
         },
+
+        {
+          label: "Notifications",
+
+          href: `/organizations/${organizationId}/notifications`,
+
+          icon: Bell,
+        },
       ],
     },
 
@@ -178,6 +188,14 @@ export function AppSidebar({ user, organizationId }: AppSidebarProps) {
                 href: `/organizations/${organizationId}/audit`,
 
                 icon: ScrollText,
+              },
+
+              {
+                label: "Background jobs",
+
+                href: `/organizations/${organizationId}/background-jobs`,
+
+                icon: ListTodo,
               },
             ]
           : []),
