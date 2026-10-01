@@ -19,6 +19,12 @@ import {
   StockMovementType,
 } from '../generated/prisma/client.js';
 
+import {
+  OUTBOX_AGGREGATE_TYPE,
+  OUTBOX_EVENT_TYPE,
+  createOutboxEventData,
+} from '../outbox/outbox-event.js';
+
 import { PrismaService } from '../prisma/prisma.service.js';
 
 import { AddPurchaseOrderItemDto } from './dto/add-purchase-order-item.dto.js';
@@ -70,6 +76,7 @@ export class PurchaseOrdersService {
         _count: {
           select: {
             items: true,
+
             receipts: true,
           },
         },
@@ -89,7 +96,11 @@ export class PurchaseOrdersService {
     });
   }
 
-  async findOne(organizationId: string, purchaseOrderId: string) {
+  async findOne(
+    organizationId: string,
+
+    purchaseOrderId: string,
+  ) {
     const purchaseOrder = await this.prisma.purchaseOrder.findFirst({
       where: {
         id: purchaseOrderId,
@@ -190,7 +201,9 @@ export class PurchaseOrdersService {
 
   async create(
     organizationId: string,
+
     userId: string,
+
     dto: CreatePurchaseOrderDto,
   ) {
     const [supplier, warehouse] = await Promise.all([
@@ -282,7 +295,9 @@ export class PurchaseOrdersService {
 
   async addItem(
     organizationId: string,
+
     purchaseOrderId: string,
+
     dto: AddPurchaseOrderItemDto,
   ) {
     const purchaseOrder = await this.prisma.purchaseOrder.findFirst({
@@ -375,7 +390,9 @@ export class PurchaseOrdersService {
 
   async removeItem(
     organizationId: string,
+
     purchaseOrderId: string,
+
     itemId: string,
   ): Promise<void> {
     const purchaseOrder = await this.prisma.purchaseOrder.findFirst({
@@ -418,7 +435,9 @@ export class PurchaseOrdersService {
 
   async submit(
     organizationId: string,
+
     purchaseOrderId: string,
+
     userId: string,
   ) {
     return this.runSerializableTransaction(() =>
@@ -433,6 +452,7 @@ export class PurchaseOrdersService {
 
             select: {
               id: true,
+              number: true,
               status: true,
 
               supplier: {
@@ -507,6 +527,24 @@ export class PurchaseOrdersService {
             }),
           });
 
+          await tx.outboxEvent.create({
+            data: createOutboxEventData({
+              organizationId,
+
+              eventType: OUTBOX_EVENT_TYPE.PURCHASE_ORDER_SUBMITTED,
+
+              aggregateType: OUTBOX_AGGREGATE_TYPE.PURCHASE_ORDER,
+
+              aggregateId: purchaseOrderId,
+
+              payload: {
+                number: purchaseOrder.number,
+
+                status: PurchaseOrderStatus.SUBMITTED,
+              },
+            }),
+          });
+
           return updatedPurchaseOrder;
         },
         {
@@ -522,7 +560,9 @@ export class PurchaseOrdersService {
 
   async cancel(
     organizationId: string,
+
     purchaseOrderId: string,
+
     userId: string,
   ) {
     return this.runSerializableTransaction(() =>
@@ -537,6 +577,7 @@ export class PurchaseOrdersService {
 
             select: {
               id: true,
+              number: true,
               status: true,
             },
           });
@@ -582,6 +623,24 @@ export class PurchaseOrdersService {
             }),
           });
 
+          await tx.outboxEvent.create({
+            data: createOutboxEventData({
+              organizationId,
+
+              eventType: OUTBOX_EVENT_TYPE.PURCHASE_ORDER_CANCELLED,
+
+              aggregateType: OUTBOX_AGGREGATE_TYPE.PURCHASE_ORDER,
+
+              aggregateId: purchaseOrderId,
+
+              payload: {
+                number: purchaseOrder.number,
+
+                status: PurchaseOrderStatus.CANCELLED,
+              },
+            }),
+          });
+
           return updatedPurchaseOrder;
         },
         {
@@ -597,8 +656,11 @@ export class PurchaseOrdersService {
 
   async receive(
     organizationId: string,
+
     purchaseOrderId: string,
+
     userId: string,
+
     dto: ReceivePurchaseOrderDto,
   ) {
     const uniqueItemIds = new Set(
@@ -646,7 +708,6 @@ export class PurchaseOrdersService {
                   id: true,
                   productId: true,
                   orderedQuantity: true,
-
                   receivedQuantity: true,
                 },
               },
@@ -843,6 +904,26 @@ export class PurchaseOrdersService {
 
                   quantity: item.quantity.toString(),
                 })),
+              },
+            }),
+          });
+
+          await tx.outboxEvent.create({
+            data: createOutboxEventData({
+              organizationId,
+
+              eventType: OUTBOX_EVENT_TYPE.PURCHASE_ORDER_RECEIVED,
+
+              aggregateType: OUTBOX_AGGREGATE_TYPE.PURCHASE_ORDER,
+
+              aggregateId: purchaseOrder.id,
+
+              payload: {
+                number: purchaseOrder.number,
+
+                status: nextStatus,
+
+                receiptId: receipt.id,
               },
             }),
           });

@@ -19,6 +19,12 @@ import {
   StockMovementType,
 } from '../generated/prisma/client.js';
 
+import {
+  OUTBOX_AGGREGATE_TYPE,
+  OUTBOX_EVENT_TYPE,
+  createOutboxEventData,
+} from '../outbox/outbox-event.js';
+
 import { PrismaService } from '../prisma/prisma.service.js';
 
 import { AddSalesOrderItemDto } from './dto/add-sales-order-item.dto.js';
@@ -504,6 +510,7 @@ export class SalesOrdersService {
 
             select: {
               id: true,
+              number: true,
               status: true,
 
               customer: {
@@ -578,6 +585,24 @@ export class SalesOrdersService {
             }),
           });
 
+          await tx.outboxEvent.create({
+            data: createOutboxEventData({
+              organizationId,
+
+              eventType: OUTBOX_EVENT_TYPE.SALES_ORDER_CONFIRMED,
+
+              aggregateType: OUTBOX_AGGREGATE_TYPE.SALES_ORDER,
+
+              aggregateId: salesOrderId,
+
+              payload: {
+                number: salesOrder.number,
+
+                status: SalesOrderStatus.CONFIRMED,
+              },
+            }),
+          });
+
           return updatedSalesOrder;
         },
         {
@@ -628,6 +653,7 @@ export class SalesOrdersService {
 
             select: {
               id: true,
+              number: true,
               warehouseId: true,
               status: true,
 
@@ -816,6 +842,24 @@ export class SalesOrdersService {
 
                   quantity: item.quantity.toString(),
                 })),
+              },
+            }),
+          });
+
+          await tx.outboxEvent.create({
+            data: createOutboxEventData({
+              organizationId,
+
+              eventType: OUTBOX_EVENT_TYPE.SALES_ORDER_RESERVED,
+
+              aggregateType: OUTBOX_AGGREGATE_TYPE.SALES_ORDER,
+
+              aggregateId: salesOrder.id,
+
+              payload: {
+                number: salesOrder.number,
+
+                status: nextStatus,
               },
             }),
           });
@@ -1116,6 +1160,26 @@ export class SalesOrdersService {
             }),
           });
 
+          await tx.outboxEvent.create({
+            data: createOutboxEventData({
+              organizationId,
+
+              eventType: OUTBOX_EVENT_TYPE.SALES_ORDER_FULFILLED,
+
+              aggregateType: OUTBOX_AGGREGATE_TYPE.SALES_ORDER,
+
+              aggregateId: salesOrder.id,
+
+              payload: {
+                number: salesOrder.number,
+
+                status: nextStatus,
+
+                fulfillmentId: fulfillment.id,
+              },
+            }),
+          });
+
           return {
             fulfillmentId: fulfillment.id,
 
@@ -1158,6 +1222,7 @@ export class SalesOrdersService {
 
             select: {
               id: true,
+              number: true,
               warehouseId: true,
               status: true,
 
@@ -1265,6 +1330,24 @@ export class SalesOrdersService {
               entityType: AUDIT_ENTITY_TYPE.SALES_ORDER,
 
               entityId: salesOrder.id,
+            }),
+          });
+
+          await tx.outboxEvent.create({
+            data: createOutboxEventData({
+              organizationId,
+
+              eventType: OUTBOX_EVENT_TYPE.SALES_ORDER_CANCELLED,
+
+              aggregateType: OUTBOX_AGGREGATE_TYPE.SALES_ORDER,
+
+              aggregateId: salesOrder.id,
+
+              payload: {
+                number: salesOrder.number,
+
+                status: SalesOrderStatus.CANCELLED,
+              },
             }),
           });
 
