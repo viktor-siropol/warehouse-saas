@@ -203,6 +203,7 @@ export type UserWhereInput = {
   refreshSessions?: Prisma.RefreshSessionListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
+  createdDataJobs?: Prisma.DataJobListRelationFilter
   purchaseOrdersCreated?: Prisma.PurchaseOrderListRelationFilter
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptListRelationFilter
   salesOrdersCreated?: Prisma.SalesOrderListRelationFilter
@@ -222,6 +223,7 @@ export type UserOrderByWithRelationInput = {
   refreshSessions?: Prisma.RefreshSessionOrderByRelationAggregateInput
   auditLogs?: Prisma.AuditLogOrderByRelationAggregateInput
   notifications?: Prisma.NotificationOrderByRelationAggregateInput
+  createdDataJobs?: Prisma.DataJobOrderByRelationAggregateInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderOrderByRelationAggregateInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptOrderByRelationAggregateInput
   salesOrdersCreated?: Prisma.SalesOrderOrderByRelationAggregateInput
@@ -244,6 +246,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   refreshSessions?: Prisma.RefreshSessionListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
+  createdDataJobs?: Prisma.DataJobListRelationFilter
   purchaseOrdersCreated?: Prisma.PurchaseOrderListRelationFilter
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptListRelationFilter
   salesOrdersCreated?: Prisma.SalesOrderListRelationFilter
@@ -289,6 +292,7 @@ export type UserCreateInput = {
   refreshSessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutRecipientUserInput
+  createdDataJobs?: Prisma.DataJobCreateNestedManyWithoutCreatedByInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptCreateNestedManyWithoutReceivedByInput
   salesOrdersCreated?: Prisma.SalesOrderCreateNestedManyWithoutCreatedByInput
@@ -308,6 +312,7 @@ export type UserUncheckedCreateInput = {
   refreshSessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutRecipientUserInput
+  createdDataJobs?: Prisma.DataJobUncheckedCreateNestedManyWithoutCreatedByInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedCreateNestedManyWithoutReceivedByInput
   salesOrdersCreated?: Prisma.SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
@@ -327,6 +332,7 @@ export type UserUpdateInput = {
   refreshSessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutRecipientUserNestedInput
+  createdDataJobs?: Prisma.DataJobUpdateManyWithoutCreatedByNestedInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUpdateManyWithoutReceivedByNestedInput
   salesOrdersCreated?: Prisma.SalesOrderUpdateManyWithoutCreatedByNestedInput
@@ -346,6 +352,7 @@ export type UserUncheckedUpdateInput = {
   refreshSessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutRecipientUserNestedInput
+  createdDataJobs?: Prisma.DataJobUncheckedUpdateManyWithoutCreatedByNestedInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
   salesOrdersCreated?: Prisma.SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -560,6 +567,20 @@ export type UserUpdateOneRequiredWithoutNotificationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutNotificationsInput, Prisma.UserUpdateWithoutNotificationsInput>, Prisma.UserUncheckedUpdateWithoutNotificationsInput>
 }
 
+export type UserCreateNestedOneWithoutCreatedDataJobsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedDataJobsInput, Prisma.UserUncheckedCreateWithoutCreatedDataJobsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedDataJobsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutCreatedDataJobsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedDataJobsInput, Prisma.UserUncheckedCreateWithoutCreatedDataJobsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedDataJobsInput
+  upsert?: Prisma.UserUpsertWithoutCreatedDataJobsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedDataJobsInput, Prisma.UserUpdateWithoutCreatedDataJobsInput>, Prisma.UserUncheckedUpdateWithoutCreatedDataJobsInput>
+}
+
 export type UserCreateWithoutRefreshSessionsInput = {
   id?: string
   email: string
@@ -572,6 +593,7 @@ export type UserCreateWithoutRefreshSessionsInput = {
   stockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutRecipientUserInput
+  createdDataJobs?: Prisma.DataJobCreateNestedManyWithoutCreatedByInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptCreateNestedManyWithoutReceivedByInput
   salesOrdersCreated?: Prisma.SalesOrderCreateNestedManyWithoutCreatedByInput
@@ -590,6 +612,7 @@ export type UserUncheckedCreateWithoutRefreshSessionsInput = {
   stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutRecipientUserInput
+  createdDataJobs?: Prisma.DataJobUncheckedCreateNestedManyWithoutCreatedByInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedCreateNestedManyWithoutReceivedByInput
   salesOrdersCreated?: Prisma.SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
@@ -624,6 +647,7 @@ export type UserUpdateWithoutRefreshSessionsInput = {
   stockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutRecipientUserNestedInput
+  createdDataJobs?: Prisma.DataJobUpdateManyWithoutCreatedByNestedInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUpdateManyWithoutReceivedByNestedInput
   salesOrdersCreated?: Prisma.SalesOrderUpdateManyWithoutCreatedByNestedInput
@@ -642,6 +666,7 @@ export type UserUncheckedUpdateWithoutRefreshSessionsInput = {
   stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutRecipientUserNestedInput
+  createdDataJobs?: Prisma.DataJobUncheckedUpdateManyWithoutCreatedByNestedInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
   salesOrdersCreated?: Prisma.SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -660,6 +685,7 @@ export type UserCreateWithoutMembershipsInput = {
   refreshSessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutRecipientUserInput
+  createdDataJobs?: Prisma.DataJobCreateNestedManyWithoutCreatedByInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptCreateNestedManyWithoutReceivedByInput
   salesOrdersCreated?: Prisma.SalesOrderCreateNestedManyWithoutCreatedByInput
@@ -678,6 +704,7 @@ export type UserUncheckedCreateWithoutMembershipsInput = {
   refreshSessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutRecipientUserInput
+  createdDataJobs?: Prisma.DataJobUncheckedCreateNestedManyWithoutCreatedByInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedCreateNestedManyWithoutReceivedByInput
   salesOrdersCreated?: Prisma.SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
@@ -712,6 +739,7 @@ export type UserUpdateWithoutMembershipsInput = {
   refreshSessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutRecipientUserNestedInput
+  createdDataJobs?: Prisma.DataJobUpdateManyWithoutCreatedByNestedInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUpdateManyWithoutReceivedByNestedInput
   salesOrdersCreated?: Prisma.SalesOrderUpdateManyWithoutCreatedByNestedInput
@@ -730,6 +758,7 @@ export type UserUncheckedUpdateWithoutMembershipsInput = {
   refreshSessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutRecipientUserNestedInput
+  createdDataJobs?: Prisma.DataJobUncheckedUpdateManyWithoutCreatedByNestedInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
   salesOrdersCreated?: Prisma.SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -748,6 +777,7 @@ export type UserCreateWithoutStockMovementsInput = {
   refreshSessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutRecipientUserInput
+  createdDataJobs?: Prisma.DataJobCreateNestedManyWithoutCreatedByInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptCreateNestedManyWithoutReceivedByInput
   salesOrdersCreated?: Prisma.SalesOrderCreateNestedManyWithoutCreatedByInput
@@ -766,6 +796,7 @@ export type UserUncheckedCreateWithoutStockMovementsInput = {
   refreshSessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutRecipientUserInput
+  createdDataJobs?: Prisma.DataJobUncheckedCreateNestedManyWithoutCreatedByInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedCreateNestedManyWithoutReceivedByInput
   salesOrdersCreated?: Prisma.SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
@@ -800,6 +831,7 @@ export type UserUpdateWithoutStockMovementsInput = {
   refreshSessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutRecipientUserNestedInput
+  createdDataJobs?: Prisma.DataJobUpdateManyWithoutCreatedByNestedInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUpdateManyWithoutReceivedByNestedInput
   salesOrdersCreated?: Prisma.SalesOrderUpdateManyWithoutCreatedByNestedInput
@@ -818,6 +850,7 @@ export type UserUncheckedUpdateWithoutStockMovementsInput = {
   refreshSessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutRecipientUserNestedInput
+  createdDataJobs?: Prisma.DataJobUncheckedUpdateManyWithoutCreatedByNestedInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
   salesOrdersCreated?: Prisma.SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -837,6 +870,7 @@ export type UserCreateWithoutPurchaseOrdersCreatedInput = {
   refreshSessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutRecipientUserInput
+  createdDataJobs?: Prisma.DataJobCreateNestedManyWithoutCreatedByInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptCreateNestedManyWithoutReceivedByInput
   salesOrdersCreated?: Prisma.SalesOrderCreateNestedManyWithoutCreatedByInput
   salesFulfillmentsCreated?: Prisma.SalesFulfillmentCreateNestedManyWithoutFulfilledByInput
@@ -855,6 +889,7 @@ export type UserUncheckedCreateWithoutPurchaseOrdersCreatedInput = {
   refreshSessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutRecipientUserInput
+  createdDataJobs?: Prisma.DataJobUncheckedCreateNestedManyWithoutCreatedByInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedCreateNestedManyWithoutReceivedByInput
   salesOrdersCreated?: Prisma.SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
   salesFulfillmentsCreated?: Prisma.SalesFulfillmentUncheckedCreateNestedManyWithoutFulfilledByInput
@@ -889,6 +924,7 @@ export type UserUpdateWithoutPurchaseOrdersCreatedInput = {
   refreshSessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutRecipientUserNestedInput
+  createdDataJobs?: Prisma.DataJobUpdateManyWithoutCreatedByNestedInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUpdateManyWithoutReceivedByNestedInput
   salesOrdersCreated?: Prisma.SalesOrderUpdateManyWithoutCreatedByNestedInput
   salesFulfillmentsCreated?: Prisma.SalesFulfillmentUpdateManyWithoutFulfilledByNestedInput
@@ -907,6 +943,7 @@ export type UserUncheckedUpdateWithoutPurchaseOrdersCreatedInput = {
   refreshSessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutRecipientUserNestedInput
+  createdDataJobs?: Prisma.DataJobUncheckedUpdateManyWithoutCreatedByNestedInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
   salesOrdersCreated?: Prisma.SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   salesFulfillmentsCreated?: Prisma.SalesFulfillmentUncheckedUpdateManyWithoutFulfilledByNestedInput
@@ -925,6 +962,7 @@ export type UserCreateWithoutPurchaseReceiptsReceivedInput = {
   refreshSessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutRecipientUserInput
+  createdDataJobs?: Prisma.DataJobCreateNestedManyWithoutCreatedByInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   salesOrdersCreated?: Prisma.SalesOrderCreateNestedManyWithoutCreatedByInput
   salesFulfillmentsCreated?: Prisma.SalesFulfillmentCreateNestedManyWithoutFulfilledByInput
@@ -943,6 +981,7 @@ export type UserUncheckedCreateWithoutPurchaseReceiptsReceivedInput = {
   refreshSessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutRecipientUserInput
+  createdDataJobs?: Prisma.DataJobUncheckedCreateNestedManyWithoutCreatedByInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   salesOrdersCreated?: Prisma.SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
   salesFulfillmentsCreated?: Prisma.SalesFulfillmentUncheckedCreateNestedManyWithoutFulfilledByInput
@@ -977,6 +1016,7 @@ export type UserUpdateWithoutPurchaseReceiptsReceivedInput = {
   refreshSessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutRecipientUserNestedInput
+  createdDataJobs?: Prisma.DataJobUpdateManyWithoutCreatedByNestedInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   salesOrdersCreated?: Prisma.SalesOrderUpdateManyWithoutCreatedByNestedInput
   salesFulfillmentsCreated?: Prisma.SalesFulfillmentUpdateManyWithoutFulfilledByNestedInput
@@ -995,6 +1035,7 @@ export type UserUncheckedUpdateWithoutPurchaseReceiptsReceivedInput = {
   refreshSessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutRecipientUserNestedInput
+  createdDataJobs?: Prisma.DataJobUncheckedUpdateManyWithoutCreatedByNestedInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   salesOrdersCreated?: Prisma.SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   salesFulfillmentsCreated?: Prisma.SalesFulfillmentUncheckedUpdateManyWithoutFulfilledByNestedInput
@@ -1013,6 +1054,7 @@ export type UserCreateWithoutSalesOrdersCreatedInput = {
   refreshSessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutRecipientUserInput
+  createdDataJobs?: Prisma.DataJobCreateNestedManyWithoutCreatedByInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptCreateNestedManyWithoutReceivedByInput
   salesFulfillmentsCreated?: Prisma.SalesFulfillmentCreateNestedManyWithoutFulfilledByInput
@@ -1031,6 +1073,7 @@ export type UserUncheckedCreateWithoutSalesOrdersCreatedInput = {
   refreshSessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutRecipientUserInput
+  createdDataJobs?: Prisma.DataJobUncheckedCreateNestedManyWithoutCreatedByInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedCreateNestedManyWithoutReceivedByInput
   salesFulfillmentsCreated?: Prisma.SalesFulfillmentUncheckedCreateNestedManyWithoutFulfilledByInput
@@ -1065,6 +1108,7 @@ export type UserUpdateWithoutSalesOrdersCreatedInput = {
   refreshSessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutRecipientUserNestedInput
+  createdDataJobs?: Prisma.DataJobUpdateManyWithoutCreatedByNestedInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUpdateManyWithoutReceivedByNestedInput
   salesFulfillmentsCreated?: Prisma.SalesFulfillmentUpdateManyWithoutFulfilledByNestedInput
@@ -1083,6 +1127,7 @@ export type UserUncheckedUpdateWithoutSalesOrdersCreatedInput = {
   refreshSessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutRecipientUserNestedInput
+  createdDataJobs?: Prisma.DataJobUncheckedUpdateManyWithoutCreatedByNestedInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
   salesFulfillmentsCreated?: Prisma.SalesFulfillmentUncheckedUpdateManyWithoutFulfilledByNestedInput
@@ -1101,6 +1146,7 @@ export type UserCreateWithoutSalesFulfillmentsCreatedInput = {
   refreshSessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutRecipientUserInput
+  createdDataJobs?: Prisma.DataJobCreateNestedManyWithoutCreatedByInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptCreateNestedManyWithoutReceivedByInput
   salesOrdersCreated?: Prisma.SalesOrderCreateNestedManyWithoutCreatedByInput
@@ -1119,6 +1165,7 @@ export type UserUncheckedCreateWithoutSalesFulfillmentsCreatedInput = {
   refreshSessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutRecipientUserInput
+  createdDataJobs?: Prisma.DataJobUncheckedCreateNestedManyWithoutCreatedByInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedCreateNestedManyWithoutReceivedByInput
   salesOrdersCreated?: Prisma.SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
@@ -1153,6 +1200,7 @@ export type UserUpdateWithoutSalesFulfillmentsCreatedInput = {
   refreshSessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutRecipientUserNestedInput
+  createdDataJobs?: Prisma.DataJobUpdateManyWithoutCreatedByNestedInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUpdateManyWithoutReceivedByNestedInput
   salesOrdersCreated?: Prisma.SalesOrderUpdateManyWithoutCreatedByNestedInput
@@ -1171,6 +1219,7 @@ export type UserUncheckedUpdateWithoutSalesFulfillmentsCreatedInput = {
   refreshSessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutRecipientUserNestedInput
+  createdDataJobs?: Prisma.DataJobUncheckedUpdateManyWithoutCreatedByNestedInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
   salesOrdersCreated?: Prisma.SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -1188,6 +1237,7 @@ export type UserCreateWithoutAuditLogsInput = {
   stockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   refreshSessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutRecipientUserInput
+  createdDataJobs?: Prisma.DataJobCreateNestedManyWithoutCreatedByInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptCreateNestedManyWithoutReceivedByInput
   salesOrdersCreated?: Prisma.SalesOrderCreateNestedManyWithoutCreatedByInput
@@ -1206,6 +1256,7 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   refreshSessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutRecipientUserInput
+  createdDataJobs?: Prisma.DataJobUncheckedCreateNestedManyWithoutCreatedByInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedCreateNestedManyWithoutReceivedByInput
   salesOrdersCreated?: Prisma.SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
@@ -1240,6 +1291,7 @@ export type UserUpdateWithoutAuditLogsInput = {
   stockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   refreshSessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutRecipientUserNestedInput
+  createdDataJobs?: Prisma.DataJobUpdateManyWithoutCreatedByNestedInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUpdateManyWithoutReceivedByNestedInput
   salesOrdersCreated?: Prisma.SalesOrderUpdateManyWithoutCreatedByNestedInput
@@ -1258,6 +1310,7 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   refreshSessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutRecipientUserNestedInput
+  createdDataJobs?: Prisma.DataJobUncheckedUpdateManyWithoutCreatedByNestedInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
   salesOrdersCreated?: Prisma.SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -1276,6 +1329,7 @@ export type UserCreateWithoutNotificationsInput = {
   stockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
   refreshSessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorUserInput
+  createdDataJobs?: Prisma.DataJobCreateNestedManyWithoutCreatedByInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptCreateNestedManyWithoutReceivedByInput
   salesOrdersCreated?: Prisma.SalesOrderCreateNestedManyWithoutCreatedByInput
@@ -1294,6 +1348,7 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
   refreshSessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorUserInput
+  createdDataJobs?: Prisma.DataJobUncheckedCreateNestedManyWithoutCreatedByInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedCreateNestedManyWithoutReceivedByInput
   salesOrdersCreated?: Prisma.SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
@@ -1328,6 +1383,7 @@ export type UserUpdateWithoutNotificationsInput = {
   stockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
   refreshSessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutActorUserNestedInput
+  createdDataJobs?: Prisma.DataJobUpdateManyWithoutCreatedByNestedInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUpdateManyWithoutReceivedByNestedInput
   salesOrdersCreated?: Prisma.SalesOrderUpdateManyWithoutCreatedByNestedInput
@@ -1346,6 +1402,99 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
   refreshSessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorUserNestedInput
+  createdDataJobs?: Prisma.DataJobUncheckedUpdateManyWithoutCreatedByNestedInput
+  purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
+  salesOrdersCreated?: Prisma.SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentUncheckedUpdateManyWithoutFulfilledByNestedInput
+}
+
+export type UserCreateWithoutCreatedDataJobsInput = {
+  id?: string
+  email: string
+  firstName: string
+  lastName: string
+  passwordHash: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.MembershipCreateNestedManyWithoutUserInput
+  stockMovements?: Prisma.StockMovementCreateNestedManyWithoutCreatedByInput
+  refreshSessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutActorUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutRecipientUserInput
+  purchaseOrdersCreated?: Prisma.PurchaseOrderCreateNestedManyWithoutCreatedByInput
+  purchaseReceiptsReceived?: Prisma.PurchaseReceiptCreateNestedManyWithoutReceivedByInput
+  salesOrdersCreated?: Prisma.SalesOrderCreateNestedManyWithoutCreatedByInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentCreateNestedManyWithoutFulfilledByInput
+}
+
+export type UserUncheckedCreateWithoutCreatedDataJobsInput = {
+  id?: string
+  email: string
+  firstName: string
+  lastName: string
+  passwordHash: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  memberships?: Prisma.MembershipUncheckedCreateNestedManyWithoutUserInput
+  stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutCreatedByInput
+  refreshSessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutRecipientUserInput
+  purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedCreateNestedManyWithoutReceivedByInput
+  salesOrdersCreated?: Prisma.SalesOrderUncheckedCreateNestedManyWithoutCreatedByInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentUncheckedCreateNestedManyWithoutFulfilledByInput
+}
+
+export type UserCreateOrConnectWithoutCreatedDataJobsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedDataJobsInput, Prisma.UserUncheckedCreateWithoutCreatedDataJobsInput>
+}
+
+export type UserUpsertWithoutCreatedDataJobsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCreatedDataJobsInput, Prisma.UserUncheckedUpdateWithoutCreatedDataJobsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedDataJobsInput, Prisma.UserUncheckedCreateWithoutCreatedDataJobsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCreatedDataJobsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCreatedDataJobsInput, Prisma.UserUncheckedUpdateWithoutCreatedDataJobsInput>
+}
+
+export type UserUpdateWithoutCreatedDataJobsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.MembershipUpdateManyWithoutUserNestedInput
+  stockMovements?: Prisma.StockMovementUpdateManyWithoutCreatedByNestedInput
+  refreshSessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutActorUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutRecipientUserNestedInput
+  purchaseOrdersCreated?: Prisma.PurchaseOrderUpdateManyWithoutCreatedByNestedInput
+  purchaseReceiptsReceived?: Prisma.PurchaseReceiptUpdateManyWithoutReceivedByNestedInput
+  salesOrdersCreated?: Prisma.SalesOrderUpdateManyWithoutCreatedByNestedInput
+  salesFulfillmentsCreated?: Prisma.SalesFulfillmentUpdateManyWithoutFulfilledByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCreatedDataJobsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.MembershipUncheckedUpdateManyWithoutUserNestedInput
+  stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutCreatedByNestedInput
+  refreshSessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutActorUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutRecipientUserNestedInput
   purchaseOrdersCreated?: Prisma.PurchaseOrderUncheckedUpdateManyWithoutCreatedByNestedInput
   purchaseReceiptsReceived?: Prisma.PurchaseReceiptUncheckedUpdateManyWithoutReceivedByNestedInput
   salesOrdersCreated?: Prisma.SalesOrderUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -1363,6 +1512,7 @@ export type UserCountOutputType = {
   refreshSessions: number
   auditLogs: number
   notifications: number
+  createdDataJobs: number
   purchaseOrdersCreated: number
   purchaseReceiptsReceived: number
   salesOrdersCreated: number
@@ -1375,6 +1525,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   refreshSessions?: boolean | UserCountOutputTypeCountRefreshSessionsArgs
   auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
   notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
+  createdDataJobs?: boolean | UserCountOutputTypeCountCreatedDataJobsArgs
   purchaseOrdersCreated?: boolean | UserCountOutputTypeCountPurchaseOrdersCreatedArgs
   purchaseReceiptsReceived?: boolean | UserCountOutputTypeCountPurchaseReceiptsReceivedArgs
   salesOrdersCreated?: boolean | UserCountOutputTypeCountSalesOrdersCreatedArgs
@@ -1429,6 +1580,13 @@ export type UserCountOutputTypeCountNotificationsArgs<ExtArgs extends runtime.Ty
 /**
  * UserCountOutputType without action
  */
+export type UserCountOutputTypeCountCreatedDataJobsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DataJobWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
 export type UserCountOutputTypeCountPurchaseOrdersCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.PurchaseOrderWhereInput
 }
@@ -1468,6 +1626,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   refreshSessions?: boolean | Prisma.User$refreshSessionsArgs<ExtArgs>
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
   notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
+  createdDataJobs?: boolean | Prisma.User$createdDataJobsArgs<ExtArgs>
   purchaseOrdersCreated?: boolean | Prisma.User$purchaseOrdersCreatedArgs<ExtArgs>
   purchaseReceiptsReceived?: boolean | Prisma.User$purchaseReceiptsReceivedArgs<ExtArgs>
   salesOrdersCreated?: boolean | Prisma.User$salesOrdersCreatedArgs<ExtArgs>
@@ -1512,6 +1671,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   refreshSessions?: boolean | Prisma.User$refreshSessionsArgs<ExtArgs>
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
   notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
+  createdDataJobs?: boolean | Prisma.User$createdDataJobsArgs<ExtArgs>
   purchaseOrdersCreated?: boolean | Prisma.User$purchaseOrdersCreatedArgs<ExtArgs>
   purchaseReceiptsReceived?: boolean | Prisma.User$purchaseReceiptsReceivedArgs<ExtArgs>
   salesOrdersCreated?: boolean | Prisma.User$salesOrdersCreatedArgs<ExtArgs>
@@ -1529,6 +1689,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     refreshSessions: Prisma.$RefreshSessionPayload<ExtArgs>[]
     auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
     notifications: Prisma.$NotificationPayload<ExtArgs>[]
+    createdDataJobs: Prisma.$DataJobPayload<ExtArgs>[]
     purchaseOrdersCreated: Prisma.$PurchaseOrderPayload<ExtArgs>[]
     purchaseReceiptsReceived: Prisma.$PurchaseReceiptPayload<ExtArgs>[]
     salesOrdersCreated: Prisma.$SalesOrderPayload<ExtArgs>[]
@@ -1941,6 +2102,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   refreshSessions<T extends Prisma.User$refreshSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$refreshSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RefreshSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   auditLogs<T extends Prisma.User$auditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   notifications<T extends Prisma.User$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  createdDataJobs<T extends Prisma.User$createdDataJobsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdDataJobsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DataJobPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   purchaseOrdersCreated<T extends Prisma.User$purchaseOrdersCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$purchaseOrdersCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PurchaseOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   purchaseReceiptsReceived<T extends Prisma.User$purchaseReceiptsReceivedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$purchaseReceiptsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PurchaseReceiptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   salesOrdersCreated<T extends Prisma.User$salesOrdersCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$salesOrdersCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SalesOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2491,6 +2653,30 @@ export type User$notificationsArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.NotificationScalarFieldEnum | Prisma.NotificationScalarFieldEnum[]
+}
+
+/**
+ * User.createdDataJobs
+ */
+export type User$createdDataJobsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DataJob
+   */
+  select?: Prisma.DataJobSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DataJob
+   */
+  omit?: Prisma.DataJobOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DataJobInclude<ExtArgs> | null
+  where?: Prisma.DataJobWhereInput
+  orderBy?: Prisma.DataJobOrderByWithRelationInput | Prisma.DataJobOrderByWithRelationInput[]
+  cursor?: Prisma.DataJobWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DataJobScalarFieldEnum | Prisma.DataJobScalarFieldEnum[]
 }
 
 /**

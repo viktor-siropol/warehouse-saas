@@ -127,3 +127,13 @@ export type OutboxEvent = Prisma.OutboxEventModel
  * 
  */
 export type Notification = Prisma.NotificationModel
+/**
+ * Model DataJob
+ * 
+ */
+export type DataJob = Prisma.DataJobModel
+/**
+ * Model DataJobError
+ * 
+ */
+export type DataJobError = Prisma.DataJobErrorModel

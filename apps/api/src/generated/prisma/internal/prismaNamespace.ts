@@ -418,7 +418,9 @@ export const ModelName = {
   SalesFulfillmentItem: 'SalesFulfillmentItem',
   AuditLog: 'AuditLog',
   OutboxEvent: 'OutboxEvent',
-  Notification: 'Notification'
+  Notification: 'Notification',
+  DataJob: 'DataJob',
+  DataJobError: 'DataJobError'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -434,7 +436,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "organization" | "user" | "refreshSession" | "membership" | "warehouse" | "category" | "product" | "inventory" | "stockMovement" | "supplier" | "purchaseOrder" | "purchaseOrderItem" | "purchaseReceipt" | "purchaseReceiptItem" | "customer" | "salesOrder" | "salesOrderItem" | "salesFulfillment" | "salesFulfillmentItem" | "auditLog" | "outboxEvent" | "notification"
+    modelProps: "organization" | "user" | "refreshSession" | "membership" | "warehouse" | "category" | "product" | "inventory" | "stockMovement" | "supplier" | "purchaseOrder" | "purchaseOrderItem" | "purchaseReceipt" | "purchaseReceiptItem" | "customer" | "salesOrder" | "salesOrderItem" | "salesFulfillment" | "salesFulfillmentItem" | "auditLog" | "outboxEvent" | "notification" | "dataJob" | "dataJobError"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2066,6 +2068,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    DataJob: {
+      payload: Prisma.$DataJobPayload<ExtArgs>
+      fields: Prisma.DataJobFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DataJobFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DataJobPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DataJobFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DataJobPayload>
+        }
+        findFirst: {
+          args: Prisma.DataJobFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DataJobPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DataJobFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DataJobPayload>
+        }
+        findMany: {
+          args: Prisma.DataJobFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DataJobPayload>[]
+        }
+        create: {
+          args: Prisma.DataJobCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DataJobPayload>
+        }
+        createMany: {
+          args: Prisma.DataJobCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DataJobCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DataJobPayload>[]
+        }
+        delete: {
+          args: Prisma.DataJobDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DataJobPayload>
+        }
+        update: {
+          args: Prisma.DataJobUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DataJobPayload>
+        }
+        deleteMany: {
+          args: Prisma.DataJobDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DataJobUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DataJobUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DataJobPayload>[]
+        }
+        upsert: {
+          args: Prisma.DataJobUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DataJobPayload>
+        }
+        aggregate: {
+          args: Prisma.DataJobAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDataJob>
+        }
+        groupBy: {
+          args: Prisma.DataJobGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DataJobGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DataJobCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DataJobCountAggregateOutputType> | number
+        }
+      }
+    }
+    DataJobError: {
+      payload: Prisma.$DataJobErrorPayload<ExtArgs>
+      fields: Prisma.DataJobErrorFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DataJobErrorFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DataJobErrorPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DataJobErrorFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DataJobErrorPayload>
+        }
+        findFirst: {
+          args: Prisma.DataJobErrorFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DataJobErrorPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DataJobErrorFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DataJobErrorPayload>
+        }
+        findMany: {
+          args: Prisma.DataJobErrorFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DataJobErrorPayload>[]
+        }
+        create: {
+          args: Prisma.DataJobErrorCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DataJobErrorPayload>
+        }
+        createMany: {
+          args: Prisma.DataJobErrorCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DataJobErrorCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DataJobErrorPayload>[]
+        }
+        delete: {
+          args: Prisma.DataJobErrorDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DataJobErrorPayload>
+        }
+        update: {
+          args: Prisma.DataJobErrorUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DataJobErrorPayload>
+        }
+        deleteMany: {
+          args: Prisma.DataJobErrorDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DataJobErrorUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DataJobErrorUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DataJobErrorPayload>[]
+        }
+        upsert: {
+          args: Prisma.DataJobErrorUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DataJobErrorPayload>
+        }
+        aggregate: {
+          args: Prisma.DataJobErrorAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDataJobError>
+        }
+        groupBy: {
+          args: Prisma.DataJobErrorGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DataJobErrorGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DataJobErrorCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DataJobErrorCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2422,6 +2572,47 @@ export const NotificationScalarFieldEnum = {
 export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
 
 
+export const DataJobScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  createdById: 'createdById',
+  type: 'type',
+  status: 'status',
+  inputFileName: 'inputFileName',
+  inputText: 'inputText',
+  outputFileName: 'outputFileName',
+  outputText: 'outputText',
+  totalRows: 'totalRows',
+  processedRows: 'processedRows',
+  successfulRows: 'successfulRows',
+  failedRows: 'failedRows',
+  attempts: 'attempts',
+  availableAt: 'availableAt',
+  lockedAt: 'lockedAt',
+  lockedBy: 'lockedBy',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  lastError: 'lastError',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DataJobScalarFieldEnum = (typeof DataJobScalarFieldEnum)[keyof typeof DataJobScalarFieldEnum]
+
+
+export const DataJobErrorScalarFieldEnum = {
+  id: 'id',
+  dataJobId: 'dataJobId',
+  rowNumber: 'rowNumber',
+  code: 'code',
+  message: 'message',
+  rowData: 'rowData',
+  createdAt: 'createdAt'
+} as const
+
+export type DataJobErrorScalarFieldEnum = (typeof DataJobErrorScalarFieldEnum)[keyof typeof DataJobErrorScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -2638,6 +2829,34 @@ export type ListEnumNotificationKindFieldRefInput<$PrismaModel> = FieldRefInputT
 
 
 /**
+ * Reference to a field of type 'DataJobType'
+ */
+export type EnumDataJobTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DataJobType'>
+    
+
+
+/**
+ * Reference to a field of type 'DataJobType[]'
+ */
+export type ListEnumDataJobTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DataJobType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'DataJobStatus'
+ */
+export type EnumDataJobStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DataJobStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'DataJobStatus[]'
+ */
+export type ListEnumDataJobStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DataJobStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -2823,6 +3042,8 @@ export type GlobalOmitConfig = {
   auditLog?: Prisma.AuditLogOmit
   outboxEvent?: Prisma.OutboxEventOmit
   notification?: Prisma.NotificationOmit
+  dataJob?: Prisma.DataJobOmit
+  dataJobError?: Prisma.DataJobErrorOmit
 }
 
 /* Types for Logging */

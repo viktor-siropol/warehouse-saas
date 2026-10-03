@@ -72,7 +72,9 @@ export const ModelName = {
   SalesFulfillmentItem: 'SalesFulfillmentItem',
   AuditLog: 'AuditLog',
   OutboxEvent: 'OutboxEvent',
-  Notification: 'Notification'
+  Notification: 'Notification',
+  DataJob: 'DataJob',
+  DataJobError: 'DataJobError'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -406,6 +408,47 @@ export const NotificationScalarFieldEnum = {
 } as const
 
 export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+
+
+export const DataJobScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  createdById: 'createdById',
+  type: 'type',
+  status: 'status',
+  inputFileName: 'inputFileName',
+  inputText: 'inputText',
+  outputFileName: 'outputFileName',
+  outputText: 'outputText',
+  totalRows: 'totalRows',
+  processedRows: 'processedRows',
+  successfulRows: 'successfulRows',
+  failedRows: 'failedRows',
+  attempts: 'attempts',
+  availableAt: 'availableAt',
+  lockedAt: 'lockedAt',
+  lockedBy: 'lockedBy',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  lastError: 'lastError',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DataJobScalarFieldEnum = (typeof DataJobScalarFieldEnum)[keyof typeof DataJobScalarFieldEnum]
+
+
+export const DataJobErrorScalarFieldEnum = {
+  id: 'id',
+  dataJobId: 'dataJobId',
+  rowNumber: 'rowNumber',
+  code: 'code',
+  message: 'message',
+  rowData: 'rowData',
+  createdAt: 'createdAt'
+} as const
+
+export type DataJobErrorScalarFieldEnum = (typeof DataJobErrorScalarFieldEnum)[keyof typeof DataJobErrorScalarFieldEnum]
 
 
 export const SortOrder = {

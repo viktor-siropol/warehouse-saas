@@ -53,6 +53,19 @@ enum NotificationKind {
   WARNING
 }
 
+enum DataJobType {
+  PRODUCT_IMPORT
+  PRODUCT_EXPORT
+}
+
+enum DataJobStatus {
+  PENDING
+  PROCESSING
+  SUCCEEDED
+  PARTIALLY_SUCCEEDED
+  FAILED
+}
+
 model Organization {
   id        String   @id @default(uuid()) @db.Uuid
   name      String
@@ -71,6 +84,7 @@ model Organization {
   auditLogs      AuditLog[]
   outboxEvents   OutboxEvent[]
   notifications  Notification[]
+  dataJobs       DataJob[]
 }
 
 model User {
@@ -87,6 +101,7 @@ model User {
   refreshSessions          RefreshSession[]
   auditLogs                AuditLog[]
   notifications            Notification[]
+  createdDataJobs          DataJob[]
   purchaseOrdersCreated    PurchaseOrder[]    @relation("PurchaseOrderCreatedBy")
   purchaseReceiptsReceived PurchaseReceipt[]  @relation("PurchaseReceiptReceivedBy")
   salesOrdersCreated       SalesOrder[]       @relation("SalesOrderCreatedBy")
@@ -499,4 +514,64 @@ model Notification {
   @@unique([outboxEventId, recipientUserId])
   @@index([organizationId, recipientUserId, readAt, createdAt])
   @@index([recipientUserId, createdAt])
+}
+
+model DataJob {
+  id             String        @id @default(uuid()) @db.Uuid
+  organizationId String        @db.Uuid
+  createdById    String        @db.Uuid
+  type           DataJobType
+  status         DataJobStatus @default(PENDING)
+
+  inputFileName String? @db.VarChar(255)
+  inputText     String? @db.Text
+
+  outputFileName String? @db.VarChar(255)
+  outputText     String? @db.Text
+
+  totalRows      Int @default(0)
+  processedRows  Int @default(0)
+  successfulRows Int @default(0)
+  failedRows     Int @default(0)
+
+  attempts    Int       @default(0)
+  availableAt DateTime  @default(now())
+  lockedAt    DateTime?
+  lockedBy    String?   @db.VarChar(100)
+
+  startedAt   DateTime?
+  completedAt DateTime?
+  lastError   String?   @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  createdBy    User         @relation(fields: [createdById], references: [id], onDelete: Restrict)
+
+  errors DataJobError[]
+
+  @@index([organizationId, createdAt])
+  @@index([organizationId, status, createdAt])
+  @@index([status, availableAt, createdAt])
+  @@index([status, lockedAt])
+  @@index([createdById, createdAt])
+}
+
+model DataJobError {
+  id        String @id @default(uuid()) @db.Uuid
+  dataJobId String @db.Uuid
+
+  rowNumber Int
+
+  code    String @db.VarChar(100)
+  message String @db.VarChar(1000)
+
+  rowData Json?
+
+  createdAt DateTime @default(now())
+
+  dataJob DataJob @relation(fields: [dataJobId], references: [id], onDelete: Cascade)
+
+  @@index([dataJobId, rowNumber])
 }

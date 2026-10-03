@@ -71,3 +71,22 @@ export const NotificationKind = {
 } as const
 
 export type NotificationKind = (typeof NotificationKind)[keyof typeof NotificationKind]
+
+
+export const DataJobType = {
+  PRODUCT_IMPORT: 'PRODUCT_IMPORT',
+  PRODUCT_EXPORT: 'PRODUCT_EXPORT'
+} as const
+
+export type DataJobType = (typeof DataJobType)[keyof typeof DataJobType]
+
+
+export const DataJobStatus = {
+  PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  SUCCEEDED: 'SUCCEEDED',
+  PARTIALLY_SUCCEEDED: 'PARTIALLY_SUCCEEDED',
+  FAILED: 'FAILED'
+} as const
+
+export type DataJobStatus = (typeof DataJobStatus)[keyof typeof DataJobStatus]
