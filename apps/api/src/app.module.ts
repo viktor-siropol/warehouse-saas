@@ -16,6 +16,8 @@ import { CategoriesModule } from './categories/categories.module.js';
 
 import { CustomersModule } from './customers/customers.module.js';
 
+import { DataJobsModule } from './data-jobs/data-jobs.module.js';
+
 import { InventoryModule } from './inventory/inventory.module.js';
 
 import { NotificationsModule } from './notifications/notifications.module.js';
@@ -75,6 +77,8 @@ import { WarehousesModule } from './warehouses/warehouses.module.js';
     BackgroundJobsModule,
 
     OutboxModule,
+
+    DataJobsModule,
   ],
 
   controllers: [AppController],
