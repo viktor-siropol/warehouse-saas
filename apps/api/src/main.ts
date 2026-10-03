@@ -1,33 +1,90 @@
-import { ValidationPipe } from '@nestjs/common';
+import 'dotenv/config';
 
-import { ConfigService } from '@nestjs/config';
+import { ConsoleLogger, Logger, ValidationPipe } from '@nestjs/common';
 
 import { NestFactory } from '@nestjs/core';
 
-import { AppModule } from './app.module.js';
-
 import type { NestExpressApplication } from '@nestjs/platform-express';
 
-async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+import helmet from 'helmet';
+
+import { AppModule } from './app.module.js';
+
+import { validateRuntimeEnvironment } from './config/runtime-env.js';
+
+import { requestContextMiddleware } from './observability/request-context.middleware.js';
+
+async function bootstrap(): Promise<void> {
+  const runtime = validateRuntimeEnvironment(process.env);
+
+  const jsonLogs = runtime.logFormat === 'json';
+
+  const logger = new ConsoleLogger({
+    json: jsonLogs,
+
+    colors: !jsonLogs,
+
+    compact: jsonLogs,
+
+    logLevels:
+      runtime.nodeEnv === 'production'
+        ? ['log', 'warn', 'error', 'fatal']
+        : ['log', 'warn', 'error', 'fatal', 'debug', 'verbose'],
+  });
+
+  const app = await NestFactory.create<NestExpressApplication>(
+    AppModule,
+
+    {
+      logger,
+
+      routeConflictPolicy: {
+        duplicate: 'error',
+
+        shadow: 'warn',
+      },
+    },
+  );
+
+  app.use(
+    helmet({
+      contentSecurityPolicy: false,
+    }),
+  );
+
+  app.use(requestContextMiddleware);
 
   app.useBodyParser('json', {
     limit: '6mb',
   });
 
-  const configService = app.get(ConfigService);
-
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
+
       forbidNonWhitelisted: true,
+
       transform: true,
     }),
   );
 
-  const port = configService.get<number>('PORT') ?? 3001;
+  app.enableShutdownHooks();
 
-  await app.listen(port);
+  await app.listen(runtime.port);
+
+  const bootstrapLogger = new Logger('Bootstrap');
+
+  bootstrapLogger.log({
+    event: 'application_started',
+
+    service: 'warehouse-api',
+
+    nodeEnv: runtime.nodeEnv,
+
+    port: runtime.port,
+
+    logFormat: runtime.logFormat,
+  });
 }
 
 void bootstrap();

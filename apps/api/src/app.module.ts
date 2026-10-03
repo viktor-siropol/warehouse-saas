@@ -18,9 +18,15 @@ import { CustomersModule } from './customers/customers.module.js';
 
 import { DataJobsModule } from './data-jobs/data-jobs.module.js';
 
+import { HealthModule } from './health/health.module.js';
+
 import { InventoryModule } from './inventory/inventory.module.js';
 
 import { NotificationsModule } from './notifications/notifications.module.js';
+
+import { ObservabilityModule } from './observability/observability.module.js';
+
+import { OperationsModule } from './operations/operations.module.js';
 
 import { OutboxModule } from './outbox/outbox.module.js';
 
@@ -46,7 +52,11 @@ import { WarehousesModule } from './warehouses/warehouses.module.js';
       isGlobal: true,
     }),
 
+    ObservabilityModule,
+
     PrismaModule,
+
+    HealthModule,
 
     AuthModule,
 
@@ -79,6 +89,8 @@ import { WarehousesModule } from './warehouses/warehouses.module.js';
     OutboxModule,
 
     DataJobsModule,
+
+    OperationsModule,
   ],
 
   controllers: [AppController],
