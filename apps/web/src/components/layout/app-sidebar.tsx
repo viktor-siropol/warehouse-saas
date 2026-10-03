@@ -11,6 +11,7 @@ import {
   Boxes,
   ChevronsUpDown,
   ClipboardList,
+  FileSpreadsheet,
   LayoutDashboard,
   ListTodo,
   LogOut,
@@ -182,6 +183,14 @@ export function AppSidebar({ user, organizationId }: AppSidebarProps) {
 
         ...(membership.role !== "WORKER"
           ? [
+              {
+                label: "Data jobs",
+
+                href: `/organizations/${organizationId}/data-jobs`,
+
+                icon: FileSpreadsheet,
+              },
+
               {
                 label: "Audit log",
 
