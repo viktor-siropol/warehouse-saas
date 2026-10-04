@@ -7,7 +7,12 @@
     "dev:web": "npm run dev --workspace=web",
     "dev:api": "npm run start:dev --workspace=api",
     "build:web": "npm run build --workspace=web",
-    "build:api": "npm run build --workspace=api"
+    "build:api": "npm run build --workspace=api",
+    "build": "npm run build --workspace=api && npm run build --workspace=web",
+    "lint": "npm run lint --workspace=api && npm run lint --workspace=web",
+    "test": "npm run test --workspace=api",
+    "check:repo": "node scripts/check-repo-hygiene.mjs",
+    "ci:quality": "npm run check:repo && npm run lint && npm run build"
   },
   "keywords": [],
   "author": "Viktor Siropol <viktor.siropol.w@gmail.com>",
@@ -17,6 +22,11 @@
   "workspaces": [
     "apps/*"
   ],
+  "engines": {
+    "node": "24.21.0",
+    "npm": "11.19.0"
+  },
+  "packageManager": "npm@11.19.0",
   "devDependencies": {
     "@playwright/test": "^1.63.0"
   }

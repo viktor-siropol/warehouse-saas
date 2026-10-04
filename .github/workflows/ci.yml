@@ -1,0 +1,287 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CI: "true"
+  NEXT_TELEMETRY_DISABLED: "1"
+  API_URL: "http://127.0.0.1:3001"
+
+jobs:
+  quality:
+    name: Quality
+
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 20
+
+    env:
+      DATABASE_URL: "postgresql://warehouse_ci:warehouse_ci_password@127.0.0.1:5432/warehouse_ci?schema=public"
+
+      DEV_SEED_ENABLED: "false"
+
+      OUTBOX_WORKER_ENABLED: "false"
+
+      DATA_JOBS_WORKER_ENABLED: "false"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: ".nvmrc"
+
+          cache: "npm"
+
+          cache-dependency-path: "package-lock.json"
+
+      - name: Verify Node and npm versions
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          echo "Node: $(node --version)"
+          echo "npm:  $(npm --version)"
+
+          test "$(node --version)" = "v24.21.0"
+          test "$(npm --version)" = "11.19.0"
+
+      - name: Prepare CI logs
+        run: mkdir -p ci-logs
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Repository hygiene
+        shell: bash
+        run: |
+          set -o pipefail
+
+          node scripts/check-repo-hygiene.mjs \
+            2>&1 | tee ci-logs/repository-hygiene.log
+
+      - name: Generate Prisma Client
+        working-directory: apps/api
+        shell: bash
+        run: |
+          set -o pipefail
+
+          npx --no-install prisma generate \
+            --config prisma7.config.ts \
+            2>&1 | tee ../../ci-logs/prisma-generate.log
+
+      - name: Validate Prisma schema
+        working-directory: apps/api
+        shell: bash
+        run: |
+          set -o pipefail
+
+          npx --no-install prisma validate \
+            --config prisma7.config.ts \
+            2>&1 | tee ../../ci-logs/prisma-validate.log
+
+      - name: Lint API
+        shell: bash
+        run: |
+          set -o pipefail
+
+          npm run lint --workspace=api \
+            2>&1 | tee ci-logs/api-lint.log
+
+      - name: Build API
+        shell: bash
+        run: |
+          set -o pipefail
+
+          npm run build --workspace=api \
+            2>&1 | tee ci-logs/api-build.log
+
+      - name: Lint Web
+        shell: bash
+        run: |
+          set -o pipefail
+
+          npm run lint --workspace=web \
+            2>&1 | tee ci-logs/web-lint.log
+
+      - name: Build Web
+        shell: bash
+        run: |
+          set -o pipefail
+
+          npm run build --workspace=web \
+            2>&1 | tee ci-logs/web-build.log
+
+      - name: Upload Quality failure logs
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: quality-logs-${{ github.run_id }}
+
+          path: ci-logs
+
+          if-no-files-found: ignore
+
+          retention-days: 7
+
+  database-integration:
+    name: Database integration
+
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 20
+
+    services:
+      postgres:
+        image: postgres:17-alpine
+
+        env:
+          POSTGRES_DB: warehouse_ci
+
+          POSTGRES_USER: warehouse_ci
+
+          POSTGRES_PASSWORD: warehouse_ci_password
+
+        ports:
+          - 5432:5432
+
+        options: >-
+          --health-cmd "pg_isready -U warehouse_ci -d warehouse_ci"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      DATABASE_URL: "postgresql://warehouse_ci:warehouse_ci_password@127.0.0.1:5432/warehouse_ci?schema=public"
+
+      NODE_ENV: "test"
+
+      DEV_SEED_ENABLED: "false"
+
+      LOG_FORMAT: "json"
+
+      OUTBOX_WORKER_ENABLED: "false"
+
+      DATA_JOBS_WORKER_ENABLED: "false"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: ".nvmrc"
+
+          cache: "npm"
+
+          cache-dependency-path: "package-lock.json"
+
+      - name: Verify Node and npm versions
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          echo "Node: $(node --version)"
+          echo "npm:  $(npm --version)"
+
+          test "$(node --version)" = "v24.21.0"
+          test "$(npm --version)" = "11.19.0"
+
+      - name: Prepare CI logs
+        run: mkdir -p ci-logs
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma Client
+        working-directory: apps/api
+        shell: bash
+        run: |
+          set -o pipefail
+
+          npx --no-install prisma generate \
+            --config prisma7.config.ts \
+            2>&1 | tee ../../ci-logs/db-prisma-generate.log
+
+      - name: Validate Prisma schema
+        working-directory: apps/api
+        shell: bash
+        run: |
+          set -o pipefail
+
+          npx --no-install prisma validate \
+            --config prisma7.config.ts \
+            2>&1 | tee ../../ci-logs/db-prisma-validate.log
+
+      - name: Apply migrations to fresh PostgreSQL
+        working-directory: apps/api
+        shell: bash
+        run: |
+          set -o pipefail
+
+          npx --no-install prisma migrate deploy \
+            --config prisma7.config.ts \
+            2>&1 | tee ../../ci-logs/prisma-migrate-deploy.log
+
+      - name: Verify migration status
+        working-directory: apps/api
+        shell: bash
+        run: |
+          set -o pipefail
+
+          npx --no-install prisma migrate status \
+            --config prisma7.config.ts \
+            2>&1 | tee ../../ci-logs/prisma-migrate-status.log
+
+      - name: Verify migrations are idempotent
+        working-directory: apps/api
+        shell: bash
+        run: |
+          set -o pipefail
+
+          npx --no-install prisma migrate deploy \
+            --config prisma7.config.ts \
+            2>&1 | tee ../../ci-logs/prisma-migrate-second-deploy.log
+
+      - name: Run API test suite
+        shell: bash
+        run: |
+          set -o pipefail
+
+          npm run test --workspace=api \
+            2>&1 | tee ci-logs/api-tests.log
+
+      - name: Upload Database failure logs
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: database-integration-logs-${{ github.run_id }}
+
+          path: ci-logs
+
+          if-no-files-found: ignore
+
+          retention-days: 7
