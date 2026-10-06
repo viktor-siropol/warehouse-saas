@@ -1,0 +1,20 @@
+FROM public.ecr.aws/lambda/nodejs:24
+
+WORKDIR ${LAMBDA_TASK_ROOT}
+
+COPY package.json package-lock.json ./
+
+COPY apps/api/package.json apps/api/package.json
+COPY apps/web/package.json apps/web/package.json
+COPY apps/infra/package.json apps/infra/package.json
+
+RUN npm ci \
+  --workspace=api \
+  --include-workspace-root=false \
+  && npm cache clean --force
+
+COPY apps/api/prisma apps/api/prisma
+COPY apps/api/prisma7.config.ts apps/api/prisma7.config.ts
+COPY apps/api/lambda apps/api/lambda
+
+CMD ["apps/api/lambda/migrate.handler"]

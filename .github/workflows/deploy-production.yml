@@ -1,0 +1,215 @@
+
+name: Deploy production
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: production-deployment
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy AWS production
+
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 45
+
+    environment: production
+
+    env:
+      AWS_REGION: eu-central-1
+      DEV_SEED_ENABLED: "false"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: ".nvmrc"
+
+          cache: "npm"
+
+          cache-dependency-path: "package-lock.json"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build API
+        run: npm run build --workspace=api
+
+      - name: Validate infrastructure
+        run: npm run build --workspace=infra
+
+      - name: Configure AWS credentials with GitHub OIDC
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+
+          aws-region: ${{ env.AWS_REGION }}
+
+          allowed-account-ids: ${{ vars.AWS_ACCOUNT_ID }}
+
+          role-session-name: warehouse-prod-${{ github.run_id }}
+
+          mask-aws-account-id: true
+
+      - name: Verify AWS identity
+        run: aws sts get-caller-identity
+
+      - name: Deploy production stack
+        working-directory: apps/infra
+        run: |
+          npx --no-install cdk deploy \
+            WarehouseProductionStack \
+            --require-approval never \
+            --outputs-file ../../cdk-outputs.json
+
+      - name: Read deployment outputs
+        id: outputs
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+
+          const document =
+            JSON.parse(
+              fs.readFileSync(
+                'cdk-outputs.json',
+                'utf8',
+              ),
+            );
+
+          const outputs =
+            document.WarehouseProductionStack;
+
+          if (!outputs) {
+            throw new Error(
+              'WarehouseProductionStack outputs are missing',
+            );
+          }
+
+          fs.appendFileSync(
+            process.env.GITHUB_OUTPUT,
+            `migration_function=${outputs.MigrationFunctionName}\n`,
+          );
+
+          fs.appendFileSync(
+            process.env.GITHUB_OUTPUT,
+            `api_url=${outputs.ApiUrl}\n`,
+          );
+          NODE
+
+      - name: Apply Prisma migrations
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          INVOKE_RESULT="$(
+            aws lambda invoke \
+              --function-name '${{ steps.outputs.outputs.migration_function }}' \
+              --payload '{}' \
+              --cli-binary-format raw-in-base64-out \
+              migration-response.json
+          )"
+
+          echo "$INVOKE_RESULT"
+
+          if echo "$INVOKE_RESULT" | grep -q '"FunctionError"'; then
+            echo "Migration Lambda returned FunctionError"
+            cat migration-response.json
+            exit 1
+          fi
+
+          node <<'NODE'
+          const fs = require('node:fs');
+
+          const result =
+            JSON.parse(
+              fs.readFileSync(
+                'migration-response.json',
+                'utf8',
+              ),
+            );
+
+          if (
+            result.status !==
+            'ok'
+          ) {
+            throw new Error(
+              `Unexpected migration response: ${JSON.stringify(result)}`,
+            );
+          }
+
+          console.log(
+            'Production migrations completed',
+          );
+          NODE
+
+      - name: Verify production readiness
+        shell: bash
+        env:
+          API_URL: ${{ steps.outputs.outputs.api_url }}
+        run: |
+          set -euo pipefail
+
+          for attempt in $(seq 1 30); do
+            if curl \
+              --fail \
+              --silent \
+              --show-error \
+              "$API_URL/health/ready"
+            then
+              echo
+              echo "Production API is ready"
+              exit 0
+            fi
+
+            echo "Waiting for API readiness: attempt $attempt/30"
+            sleep 5
+          done
+
+          echo "Production API never became ready"
+          exit 1
+
+      - name: Verify public registration is disabled
+        shell: bash
+        env:
+          API_URL: ${{ steps.outputs.outputs.api_url }}
+        run: |
+          set -euo pipefail
+
+          STATUS="$(
+            curl \
+              --silent \
+              --show-error \
+              --output /tmp/warehouse-register-check.json \
+              --write-out '%{http_code}' \
+              --request POST \
+              "$API_URL/auth/register" \
+              --header 'Content-Type: application/json' \
+              --data '{
+                "firstName": "Blocked",
+                "lastName": "Registration",
+                "email": "blocked-registration@example.com",
+                "password": "this-registration-must-never-work-2026",
+                "organizationName": "Blocked Organization",
+                "organizationSlug": "blocked-organization"
+              }'
+          )"
+
+          cat /tmp/warehouse-register-check.json
+          echo
+
+          test "$STATUS" = "403"
+
+          echo "Public registration is disabled"
