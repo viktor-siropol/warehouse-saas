@@ -411,7 +411,7 @@ export class WarehouseProductionStack extends Stack {
           },
           StringLike: {
             "token.actions.githubusercontent.com:sub":
-              "repo:viktor-siropol/warehouse-saas:environment:production",
+              "repo:viktor-siropol@116218242/warehouse-saas@1348775604:environment:production",
           },
         },
       ),
