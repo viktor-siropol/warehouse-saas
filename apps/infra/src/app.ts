@@ -4,17 +4,39 @@ import { WarehouseProductionStack } from "./warehouse-production-stack.js";
 
 const app = new App();
 
-const registrationContext = app.node.tryGetContext("publicRegistrationEnabled");
+function readBooleanContext(name: string, defaultValue: boolean): boolean {
+  const value = app.node.tryGetContext(name);
 
-const publicRegistrationEnabled =
-  registrationContext === true || registrationContext === "true";
+  if (value === undefined) {
+    return defaultValue;
+  }
+
+  return value === true || value === "true";
+}
+
+const account = process.env.CDK_DEFAULT_ACCOUNT;
+
+if (!account) {
+  throw new Error(
+    "CDK_DEFAULT_ACCOUNT is not available. Authenticate to AWS before running CDK.",
+  );
+}
+
+const region = process.env.CDK_DEFAULT_REGION ?? "eu-central-1";
 
 new WarehouseProductionStack(app, "WarehouseProductionStack", {
   env: {
-    account: process.env.CDK_DEFAULT_ACCOUNT ?? "000000000000",
-
-    region: process.env.CDK_DEFAULT_REGION ?? "eu-central-1",
+    account,
+    region,
   },
 
-  publicRegistrationEnabled,
+  publicRegistrationEnabled: readBooleanContext(
+    "publicRegistrationEnabled",
+    false,
+  ),
+
+  databaseDeletionProtection: readBooleanContext(
+    "databaseDeletionProtection",
+    true,
+  ),
 });

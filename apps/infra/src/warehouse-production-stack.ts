@@ -36,6 +36,8 @@ import { Construct } from "constructs";
 
 export type WarehouseProductionStackProps = StackProps & {
   publicRegistrationEnabled: boolean;
+
+  databaseDeletionProtection: boolean;
 };
 
 export class WarehouseProductionStack extends Stack {
@@ -118,7 +120,7 @@ export class WarehouseProductionStack extends Stack {
       },
     });
 
-    databaseSecret.applyRemovalPolicy(RemovalPolicy.RETAIN);
+    databaseSecret.applyRemovalPolicy(RemovalPolicy.RETAIN_ON_UPDATE_OR_DELETE);
 
     const authSecret = new secretsmanager.Secret(this, "AuthSecret", {
       secretName: "/warehouse/production/auth",
@@ -134,7 +136,7 @@ export class WarehouseProductionStack extends Stack {
       },
     });
 
-    authSecret.applyRemovalPolicy(RemovalPolicy.RETAIN);
+    authSecret.applyRemovalPolicy(RemovalPolicy.RETAIN_ON_UPDATE_OR_DELETE);
 
     const databaseEngine = rds.DatabaseInstanceEngine.postgres({
       version: rds.PostgresEngineVersion.of("17.11", "17"),
@@ -189,7 +191,7 @@ export class WarehouseProductionStack extends Stack {
 
       deleteAutomatedBackups: false,
 
-      deletionProtection: true,
+      deletionProtection: props.databaseDeletionProtection,
 
       autoMinorVersionUpgrade: true,
 
@@ -240,8 +242,6 @@ export class WarehouseProductionStack extends Stack {
 
       timeout: Duration.seconds(28),
 
-      reservedConcurrentExecutions: 0,
-
       vpc,
 
       vpcSubnets: {
@@ -254,6 +254,8 @@ export class WarehouseProductionStack extends Stack {
 
       environment: {
         NODE_ENV: "production",
+
+        NODE_EXTRA_CA_CERTS: "/var/runtime/ca-cert.pem",
 
         DATABASE_URL: databaseUrl,
 
@@ -285,6 +287,7 @@ export class WarehouseProductionStack extends Stack {
       },
     });
 
+
     const migrationLogGroup = new logs.LogGroup(this, "MigrationLogGroup", {
       retention: logs.RetentionDays.ONE_MONTH,
 
@@ -310,8 +313,6 @@ export class WarehouseProductionStack extends Stack {
 
         timeout: Duration.minutes(5),
 
-        reservedConcurrentExecutions: 0,
-
         vpc,
 
         vpcSubnets: {
@@ -325,6 +326,8 @@ export class WarehouseProductionStack extends Stack {
         environment: {
           NODE_ENV: "production",
 
+          NODE_EXTRA_CA_CERTS: "/var/runtime/ca-cert.pem",
+
           DATABASE_URL: databaseUrl,
 
           DEV_SEED_ENABLED: "false",
@@ -337,8 +340,6 @@ export class WarehouseProductionStack extends Stack {
       apiFunction,
       {
         payloadFormatVersion: apigwv2.PayloadFormatVersion.VERSION_2_0,
-
-        scopePermissionToRoute: false,
 
         timeout: Duration.seconds(28),
       },

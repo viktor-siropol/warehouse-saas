@@ -1,14 +1,17 @@
-import type { Handler } from "aws-lambda";
+import type { APIGatewayProxyEventV2, Context } from 'aws-lambda';
 
-import {
-  configure as serverlessExpress,
-} from "@codegenie/serverless-express";
+import { configure as serverlessExpress } from '@codegenie/serverless-express';
 
-import { createWarehouseApplication } from "./bootstrap.js";
+import { createWarehouseApplication } from './bootstrap.js';
 
-let cachedHandler: Handler | null = null;
+type ServerlessExpressHandler = (
+  event: APIGatewayProxyEventV2,
+  context: Context,
+) => Promise<unknown>;
 
-async function getHandler(): Promise<Handler> {
+let cachedHandler: ServerlessExpressHandler | null = null;
+
+async function getHandler(): Promise<ServerlessExpressHandler> {
   if (cachedHandler) {
     return cachedHandler;
   }
@@ -19,15 +22,19 @@ async function getHandler(): Promise<Handler> {
 
   cachedHandler = serverlessExpress({
     app: app.getHttpAdapter().getInstance(),
-  }) as Handler;
+  }) as unknown as ServerlessExpressHandler;
 
   return cachedHandler;
 }
 
-export const handler: Handler = async (event, context, callback) => {
+export async function handler(
+  event: APIGatewayProxyEventV2,
+
+  context: Context,
+): Promise<unknown> {
   context.callbackWaitsForEmptyEventLoop = false;
 
   const lambdaHandler = await getHandler();
 
-  return lambdaHandler(event, context, callback);
-};
+  return lambdaHandler(event, context);
+}

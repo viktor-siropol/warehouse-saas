@@ -132,6 +132,15 @@ jobs:
           npm run build --workspace=web \
             2>&1 | tee ci-logs/web-build.log
 
+      - name: Build infrastructure
+        run: npm run build --workspace=infra
+
+      - name: Audit API production dependencies
+        run: npm audit --omit=dev --workspace=api --audit-level=critical
+
+      - name: Audit Web production dependencies
+        run: npm audit --omit=dev --workspace=web --audit-level=critical
+
       - name: Upload Quality failure logs
         if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
